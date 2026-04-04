@@ -6,6 +6,7 @@ import SnippetBullets from '../components/SnippetBullets.astro';
 import FaqAccordion from '../components/FaqAccordion.astro';
 import KeyTakeaways from '../components/KeyTakeaways.astro';
 import ContextualCta from '../components/ContextualCta.astro';
+import { BOOKING_URL } from '../config/constants';
 
 const summaryItems = [
   '<strong>AI workflow design is practical, not theoretical</strong> — the goal is fewer hours spent on tasks that AI can handle reliably, not a transformation programme that takes 18 months.',
@@ -259,7 +260,7 @@ const pageSchema = {
       <h2 class="contact-section__heading">Let's work out if this is worth a conversation.</h2>
       <p class="contact-section__lead">The first call is 30 minutes, free, and focused on your situation. If I'm not the right person, I'll tell you that and point you somewhere useful. No proposal until we've established there's something worth proposing.</p>
       <div class="contact-section__methods">
-        <a href="https://calendar.proton.me/u/1/bookings#_spVDmEIMZsc-eYxnUyAEBpUIR_sfFfbAcHmRFTqsnM=" class="btn--inverted" target="_blank" rel="noopener noreferrer">Book a 30-minute call</a>
+        <a href={BOOKING_URL} class="btn--inverted" target="_blank" rel="noopener noreferrer">Book a 30-minute call</a>
         <a class="contact-section__email" href="mailto:info@cillianbc.com">info@cillianbc.com</a>
       </div>
     </div>

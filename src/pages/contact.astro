@@ -2,8 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SummaryIntro from '../components/SummaryIntro.astro';
 import KeyTakeaways from '../components/KeyTakeaways.astro';
-
-const bookingUrl = 'https://calendar.proton.me/u/1/bookings#_spVDmEIMZsc-eYxnUyAEBpUIR_sfFfbAcHmRFTqsnM=';
+import { BOOKING_URL } from '../config/constants';
 
 const summaryItems = [
   '<strong>The first call is 30 minutes, free, and diagnostic</strong> — I want to understand your situation before recommending anything.',
@@ -58,7 +57,6 @@ const pageSchema = {
 >
   <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
 
-  <!-- Page header -->
   <section class="section" aria-label="Contact introduction">
     <div class="container container--prose">
       <h1>Contact Cillian BC</h1>
@@ -66,7 +64,6 @@ const pageSchema = {
     </div>
   </section>
 
-  <!-- Summary Intro -->
   <section class="section" id="summary-intro" aria-label="What to expect">
     <div class="container container--prose">
       <h2>What to expect</h2>
@@ -74,13 +71,12 @@ const pageSchema = {
     </div>
   </section>
 
-  <!-- Booking -->
   <section class="section contact-booking-section" id="book-a-call" aria-labelledby="booking-heading">
     <div class="container container--prose">
       <h2 id="booking-heading">Book a free 30-minute call</h2>
       <p>Pick a time that works for you. The call will focus on your specific situation — what you are trying to solve, where you are now, and whether there is something worth working on together.</p>
       <div class="contact-booking">
-        <a href={bookingUrl} class="btn--primary contact-booking__cta" target="_blank" rel="noopener noreferrer">Book a 30-minute call</a>
+        <a href={BOOKING_URL} class="btn--primary" target="_blank" rel="noopener noreferrer">Book a 30-minute call</a>
         <p class="contact-booking__secondary">
           Prefer email? <a href="mailto:info@cillianbc.com">info@cillianbc.com</a>
         </p>
@@ -88,7 +84,6 @@ const pageSchema = {
     </div>
   </section>
 
-  <!-- Key Takeaways -->
   <section class="section" id="key-takeaways" aria-label="Key takeaways">
     <div class="container container--prose">
       <KeyTakeaways items={keyTakeawaysItems} />
