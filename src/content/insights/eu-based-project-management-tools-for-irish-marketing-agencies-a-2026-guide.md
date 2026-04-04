@@ -158,7 +158,7 @@ Yes. All the platforms covered here offer client access without requiring client
 For a team of 5–15 people, a structured migration takes two to four weeks including data export, re-setup, and team onboarding. The first week is typically the most disruptive; by week three most teams are at full productivity.
 
 **Do EU project management tools integrate with Google Workspace and Microsoft 365?**
-MeisterTask, awork, and Zenkit all integrate with both. OpenProject has more limited native integrations but supports Zapier and n8n for custom workflows.
+MeisterTask, awork, and Zenkit all integrate with both. OpenProject has more limited native integrations but supports Zapier and n8n for custom workflows. For agencies building more complex automations across tools — connecting project management, invoicing, and CRM — see the [business process automation services for Irish small businesses](/automation/).
 
 **Is digital sovereignty worth paying a premium for?**
-For most Irish agencies, the premium is small or negligible at current price points. The more significant factor is risk mitigation: the cost of a data breach or regulatory investigation is a multiple of the cost of switching to a compliant tool now.
+For most Irish agencies, the premium is small or negligible at current price points. The more significant factor is risk mitigation: the cost of a data breach or regulatory investigation is a multiple of the cost of switching to a compliant tool now. The same GDPR due diligence applies to other tools in the agency stack — including visual feedback and [bug reporting platforms used with Irish and EU clients](/insights/gdpr-aware-bug-reporting-platforms-for-irish-and-eu-web-agencies/).
