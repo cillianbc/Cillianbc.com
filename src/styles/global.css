@@ -391,6 +391,43 @@ a:hover {
   box-shadow: var(--shadow-focus);
 }
 
+.btn--inverted {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md) var(--space-xl);
+  background-color: var(--color-inverted-text);
+  color: var(--color-atlantic);
+  font-family: var(--font-inter);
+  font-weight: 500;
+  font-size: var(--text-body);
+  line-height: 1;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .btn--inverted {
+    transition: background-color 200ms ease, color 200ms ease, transform 150ms ease;
+  }
+}
+
+.btn--inverted:hover {
+  background-color: var(--color-atlantic-mist);
+  color: var(--color-atlantic);
+}
+
+.btn--inverted:active {
+  transform: scale(0.98);
+}
+
+.btn--inverted:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-inverted-text);
+}
+
 /* === CONTACT SECTION === */
 .contact-section {
   position: relative;

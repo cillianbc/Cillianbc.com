@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SummaryIntro from '../components/SummaryIntro.astro';
+import KeyTakeaways from '../components/KeyTakeaways.astro';
+
+const bookingUrl = 'https://calendar.proton.me/u/1/bookings#_spVDmEIMZsc-eYxnUyAEBpUIR_sfFfbAcHmRFTqsnM=';
+
+const summaryItems = [
+  '<strong>The first call is 30 minutes, free, and diagnostic</strong> — I want to understand your situation before recommending anything.',
+  '<strong>No proposal until there is something worth proposing.</strong> If your problem is not one I can help with, I will say so plainly and point you somewhere more useful.',
+  '<strong>Nothing to prepare.</strong> Bring your questions. The conversation determines whether there is a problem worth solving together — that is all.',
+  '<strong>You can book directly below</strong> or email <a href="mailto:hello@cillianbc.com">hello@cillianbc.com</a> if you would prefer to send some context first.',
+];
+
+const keyTakeawaysItems = [
+  '<strong>Every engagement starts with a conversation, not a proposal</strong> — the diagnostic call determines whether there is a problem worth solving together.',
+  '<strong>Engagements are scoped, not open-ended.</strong> You will know what you are paying for before any work begins, with a clear deliverable and a defined endpoint.',
+  '<strong>Independent advice means no vendor bias.</strong> The recommendation is always what is right for your specific situation, not what sustains a relationship.',
+  '<strong>The work is designed to be understood, not just delivered.</strong> Your team will know why each decision was made and how to maintain it after my involvement ends.',
+];
+
+const pageSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "ContactPage",
+      "@id": "https://cillianbc.com/contact/#webpage",
+      "url": "https://cillianbc.com/contact/",
+      "name": "Contact | Cillian BC — AI Search Consultant",
+      "description": "Book a free 30-minute diagnostic call with Cillian BC, independent AI search consultant for Irish businesses.",
+      "isPartOf": { "@id": "https://cillianbc.com/#website" },
+      "inLanguage": "en-IE"
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://cillianbc.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Contact",
+          "item": "https://cillianbc.com/contact/"
+        }
+      ]
+    }
+  ]
+};
+---
+<BaseLayout
+  title="Contact | Cillian BC — AI Search Consultant"
+  description="Book a free 30-minute diagnostic call with Cillian BC, independent AI search consultant for Irish businesses. No proposal until there is something worth proposing."
+  canonicalUrl="https://cillianbc.com/contact/"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
+
+  <!-- Page header -->
+  <section class="section" aria-label="Contact introduction">
+    <div class="container container--prose">
+      <h1>Contact Cillian BC</h1>
+      <p class="contact-page__lead">Let's work out if this is worth a conversation. The first call is free, focused on your situation, and takes 30 minutes. If I am not the right person for what you need, I will tell you that and point you somewhere useful.</p>
+    </div>
+  </section>
+
+  <!-- Summary Intro -->
+  <section class="section" id="summary-intro" aria-label="What to expect">
+    <div class="container container--prose">
+      <h2>What to expect</h2>
+      <SummaryIntro items={summaryItems} />
+    </div>
+  </section>
+
+  <!-- Booking -->
+  <section class="section contact-booking-section" id="book-a-call" aria-labelledby="booking-heading">
+    <div class="container container--prose">
+      <h2 id="booking-heading">Book a free 30-minute call</h2>
+      <p>Pick a time that works for you. The call will focus on your specific situation — what you are trying to solve, where you are now, and whether there is something worth working on together.</p>
+      <div class="contact-booking">
+        <a href={bookingUrl} class="btn--primary contact-booking__cta">Book a 30-minute call</a>
+        <p class="contact-booking__secondary">
+          Prefer email? <a href="mailto:hello@cillianbc.com">hello@cillianbc.com</a>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Key Takeaways -->
+  <section class="section" id="key-takeaways" aria-label="Key takeaways">
+    <div class="container container--prose">
+      <KeyTakeaways items={keyTakeawaysItems} />
+    </div>
+  </section>
+
+</BaseLayout>
