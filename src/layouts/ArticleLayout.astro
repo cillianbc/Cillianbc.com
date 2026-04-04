@@ -1,0 +1,127 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import SkipLink from '../components/SkipLink.astro';
+import SiteNav from '../components/SiteNav.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import ReadingProgress from '../components/ReadingProgress.astro';
+import '../styles/global.css';
+import '../styles/typography.css';
+import '../styles/components.css';
+import '../styles/utilities.css';
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalUrl?: string;
+  noindex?: boolean;
+  tocItems?: { href: string; label: string }[];
+  schema?: string;
+}
+
+const { title, description, canonicalUrl, noindex, schema, tocItems = [
+  { href: '#definition', label: 'Definitions' },
+  { href: '#summary-intro', label: 'What You Need to Know' },
+  { href: '#what-is-geo', label: 'What Is GEO?' },
+  { href: '#what-is-aeo', label: 'What Is AEO?' },
+  { href: '#geo-vs-seo', label: 'GEO, AEO, and SEO' },
+  { href: '#how-ai-search-works', label: 'How AI Search Works' },
+  { href: '#geo-aeo-ireland', label: 'GEO and AEO for Irish Businesses' },
+  { href: '#how-to-optimise', label: 'How to Optimise' },
+  { href: '#faq', label: 'Frequently Asked Questions' },
+  { href: '#key-takeaways', label: 'Key Takeaways' },
+] } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en-IE">
+<head>
+  <BaseHead
+    title={title}
+    description={description}
+    canonicalUrl={canonicalUrl}
+    noindex={noindex}
+  />
+  {schema && <script type="application/ld+json" set:html={schema} />}
+</head>
+<body>
+  <SkipLink />
+  <SiteNav />
+  <ReadingProgress />
+
+  <main id="main-content">
+    <div class="article-layout">
+
+      <!-- Mobile TOC (above article, shown below 1024px) -->
+      <details class="toc-mobile">
+        <summary class="toc-mobile__trigger">
+          Contents
+          <span class="toc-mobile__chevron" aria-hidden="true">&#8964;</span>
+        </summary>
+        <nav aria-label="Table of contents">
+          <ol class="toc__list" role="list">
+            {tocItems.map((item) => (
+              <li class="toc__item">
+                <a class="toc__link" href={item.href}>{item.label}</a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      </details>
+
+      <div class="article-with-toc">
+        <!-- Article content -->
+        <article class="prose">
+          <slot />
+        </article>
+
+        <!-- Desktop TOC sidebar -->
+        <aside>
+          <nav class="toc" aria-label="Table of contents">
+            <p class="toc__heading">Contents</p>
+            <ol class="toc__list" role="list">
+              {tocItems.map((item) => (
+                <li class="toc__item">
+                  <a class="toc__link" href={item.href}>{item.label}</a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        </aside>
+      </div>
+
+    </div>
+  </main>
+
+  <SiteFooter />
+
+  <script>
+    // TOC IntersectionObserver
+    const tocLinks = document.querySelectorAll('.toc__link');
+    const headings = document.querySelectorAll('article.prose h2[id]');
+
+    if (tocLinks.length && headings.length) {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            tocLinks.forEach((link) => {
+              const href = link.getAttribute('href');
+              if (href === `#${id}`) {
+                link.classList.add('is-active');
+                link.setAttribute('aria-current', 'true');
+              } else {
+                link.classList.remove('is-active');
+                link.removeAttribute('aria-current');
+              }
+            });
+          }
+        });
+      }, {
+        rootMargin: '-20% 0px -70% 0px',
+        threshold: 0,
+      });
+
+      headings.forEach((heading) => observer.observe(heading));
+    }
+  </script>
+</body>
+</html>

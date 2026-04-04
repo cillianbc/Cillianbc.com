@@ -1,0 +1,466 @@
+/* === CSS CUSTOM PROPERTIES === */
+:root {
+  /* === COLOUR TOKENS === */
+  --color-atlantic: #1D4B52;
+  --color-atlantic-mist: #EAF2F3;
+  --color-slate: #3D5560;
+  --color-amber: #C97D2E;
+  --color-off-white: #F7F6F2;
+  --color-warm-stone: #EEECE6;
+  --color-mid-stone: #D6D2C8;
+  --color-deep-stone: #8C887F;
+  --color-primary-text: #1A1917;
+  --color-secondary-text: #4A4742;
+  --color-muted-text: #8C887F;
+  --color-inverted-text: #F7F6F2;
+  --color-success: #2A6B4A;
+  --color-warning: #A0631A;
+  --color-error: #8B2A2A;
+  --color-info: #1D4B52;
+
+  /* === SHADOWS (Atlantic-derived, not black) === */
+  --shadow-sm:    0 1px 3px rgba(29, 75, 82, 0.08);
+  --shadow-md:    0 4px 12px rgba(29, 75, 82, 0.10);
+  --shadow-lg:    0 8px 24px rgba(29, 75, 82, 0.12);
+  --shadow-focus: 0 0 0 3px rgba(29, 75, 82, 0.25);
+
+  /* === FONT FAMILIES === */
+  --font-fraunces: 'Fraunces', Georgia, 'Times New Roman', serif;
+  --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+
+  /* === INTER FEATURE SETTINGS === */
+  --font-inter-features: "cv02" 1, "cv03" 1, "cv04" 1, "cv11" 1, "ss01" 1;
+
+  /* === TYPE SCALE === */
+  --text-display: 4rem;       /* 64px — Fraunces 300, hero only */
+  --text-h1: 2.75rem;         /* 44px — Fraunces 600 */
+  --text-h2: 2rem;            /* 32px — Fraunces 600 */
+  --text-h3: 1.5rem;          /* 24px — Fraunces 600 */
+  --text-h4: 1.125rem;        /* 18px — Inter 600 */
+  --text-h5: 1rem;            /* 16px — Inter 600 */
+  --text-h6: 0.875rem;        /* 14px — Inter 600 */
+  --text-body-lg: 1.125rem;   /* 18px — Inter 400 */
+  --text-body: 1rem;          /* 16px — Inter 400 */
+  --text-body-sm: 0.875rem;   /* 14px — Inter 400 */
+  --text-caption: 0.75rem;    /* 12px — Inter 500 */
+  --text-code: 0.9375rem;     /* 15px — JetBrains Mono 400 */
+  --text-label: 0.75rem;      /* 12px — Inter 600, uppercase only */
+
+  /* === SPACING (4px base unit) === */
+  --space-xs: 0.25rem;   /* 4px */
+  --space-sm: 0.5rem;    /* 8px */
+  --space-md: 1rem;      /* 16px */
+  --space-lg: 1.5rem;    /* 24px */
+  --space-xl: 2.5rem;    /* 40px */
+  --space-2xl: 4rem;     /* 64px */
+  --space-3xl: 6rem;     /* 96px */
+  --space-4xl: 8rem;     /* 128px */
+
+  /* === LAYOUT === */
+  --prose-width: 42rem;
+  --content-width: 60rem;
+  --full-width: 75rem;
+  --section-padding-desktop: var(--space-2xl);
+  --section-padding-tablet: var(--space-xl);
+  --section-padding-mobile: var(--space-lg);
+
+  /* === NAV HEIGHT (updated by JS) === */
+  --nav-height: 64px;
+
+  /* Optical sizing globally for Fraunces */
+  font-optical-sizing: auto;
+}
+
+/* === BASE RESET === */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-off-white);
+  color: var(--color-primary-text);
+  font-family: var(--font-inter);
+  font-feature-settings: var(--font-inter-features);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* === REDUCED MOTION — base state is no motion, motion is opted into === */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* === PROSE CONTAINER === */
+.prose {
+  max-width: var(--prose-width);
+}
+
+article.prose,
+.page-content .prose {
+  max-width: var(--prose-width);
+}
+
+/* === PROSE TYPOGRAPHY === */
+.prose p {
+  margin: 0;
+  font-size: var(--text-body);
+  line-height: 1.65;
+  color: var(--color-primary-text);
+}
+
+.prose p + p {
+  margin-top: var(--space-md);
+}
+
+.prose h2,
+.prose h3 {
+  margin-top: var(--space-2xl);
+  margin-bottom: var(--space-md);
+}
+
+.prose h4 {
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-sm);
+}
+
+/* === CONTAINER SYSTEM === */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+@media (min-width: 640px) {
+  .container {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+
+.container--prose   { max-width: 42rem; }
+.container--standard { max-width: 60rem; }
+.container--full    { max-width: 75rem; }
+
+/* === SECTION === */
+.section {
+  padding-top: var(--space-lg);
+  padding-bottom: var(--space-lg);
+}
+
+@media (min-width: 640px) {
+  .section {
+    padding-top: var(--space-xl);
+    padding-bottom: var(--space-xl);
+  }
+}
+
+@media (min-width: 1024px) {
+  .section {
+    padding-top: var(--space-2xl);
+    padding-bottom: var(--space-2xl);
+  }
+}
+
+/* === HEADING DEFAULTS === */
+h1, h2, h3 {
+  font-optical-sizing: auto;
+}
+
+h1 {
+  font-family: var(--font-fraunces);
+  font-size: var(--text-h1);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.015em;
+  color: var(--color-atlantic);
+  margin: 0 0 var(--space-md) 0;
+}
+
+h2 {
+  font-family: var(--font-fraunces);
+  font-size: var(--text-h2);
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--color-atlantic);
+  margin: 0 0 var(--space-md) 0;
+}
+
+h3 {
+  font-family: var(--font-fraunces);
+  font-size: var(--text-h3);
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+  color: var(--color-atlantic);
+  margin: 0 0 var(--space-sm) 0;
+}
+
+h4 {
+  font-family: var(--font-inter);
+  font-size: var(--text-h4);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--color-atlantic);
+  margin: 0 0 var(--space-sm) 0;
+}
+
+h5 {
+  font-family: var(--font-inter);
+  font-size: var(--text-h5);
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.01em;
+  color: var(--color-atlantic);
+  margin: 0 0 var(--space-xs) 0;
+}
+
+h6 {
+  font-family: var(--font-inter);
+  font-size: var(--text-h6);
+  font-weight: 600;
+  line-height: 1.5;
+  letter-spacing: 0.03em;
+  color: var(--color-atlantic);
+  margin: 0 0 var(--space-xs) 0;
+}
+
+/* === TABLES — disable ss01, use tabular numerals === */
+.comparison-table,
+.data-table {
+  font-feature-settings: "cv02" 1, "cv03" 1, "cv04" 1, "cv11" 1;
+  font-variant-numeric: tabular-nums;
+}
+
+/* === LINKS === */
+a {
+  color: var(--color-atlantic);
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--color-slate);
+}
+
+/* === VISUALLY HIDDEN (accessible) === */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* === HERO === */
+.hero {
+  padding-top: var(--space-3xl);
+  padding-bottom: var(--space-2xl);
+}
+
+@media (max-width: 639px) {
+  .hero {
+    padding-top: var(--space-2xl);
+    padding-bottom: var(--space-xl);
+  }
+}
+
+.hero__statement {
+  font-family: var(--font-fraunces);
+  font-weight: 300;
+  font-size: var(--text-display);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--color-atlantic);
+  font-optical-sizing: auto;
+  margin: 0 0 var(--space-xl) 0;
+  max-width: 42rem;
+}
+
+@media (max-width: 639px) {
+  .hero__statement {
+    font-size: var(--text-h1);
+  }
+}
+
+.hero__lead {
+  max-width: 42rem;
+  font-size: var(--text-body-lg);
+  line-height: 1.7;
+  color: var(--color-primary-text);
+  margin-bottom: var(--space-xl);
+}
+
+.hero__cta-group {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+  margin-top: var(--space-xl);
+}
+
+/* === BUTTONS === */
+.btn--primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-md) var(--space-xl);
+  background-color: var(--color-atlantic);
+  color: var(--color-inverted-text);
+  font-family: var(--font-inter);
+  font-weight: 500;
+  font-size: var(--text-body);
+  line-height: 1;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .btn--primary {
+    transition: background-color 200ms ease, transform 150ms ease;
+  }
+}
+
+.btn--primary:hover {
+  background-color: var(--color-slate);
+  color: var(--color-inverted-text);
+}
+
+.btn--primary:active {
+  transform: scale(0.98);
+}
+
+.btn--primary:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+.btn--ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-sm) var(--space-lg);
+  background-color: transparent;
+  color: var(--color-atlantic);
+  font-family: var(--font-inter);
+  font-weight: 500;
+  font-size: var(--text-body);
+  border: 1.5px solid var(--color-atlantic);
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .btn--ghost {
+    transition: background-color 150ms ease, color 150ms ease;
+  }
+}
+
+.btn--ghost:hover {
+  background-color: var(--color-atlantic-mist);
+  color: var(--color-atlantic);
+}
+
+.btn--ghost:focus-visible {
+  outline: none;
+  box-shadow: var(--shadow-focus);
+}
+
+/* === CONTACT SECTION === */
+.contact-section {
+  position: relative;
+  background-image: url('/images/irish-landscape.webp');
+  background-size: cover;
+  background-position: center;
+  padding: var(--space-2xl) 0;
+}
+
+.contact-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-atlantic);
+  opacity: 0.72;
+  z-index: 0;
+}
+
+.contact-section .container {
+  position: relative;
+  z-index: 1;
+}
+
+.contact-section__heading {
+  font-family: var(--font-fraunces);
+  font-weight: 600;
+  font-size: var(--text-h2);
+  color: var(--color-inverted-text);
+  margin-bottom: var(--space-lg);
+  font-optical-sizing: auto;
+}
+
+.contact-section__lead {
+  font-size: var(--text-body-lg);
+  line-height: 1.7;
+  color: color-mix(in srgb, var(--color-inverted-text) 85%, transparent);
+  margin-bottom: var(--space-xl);
+  max-width: 42rem;
+}
+
+.contact-section__methods {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  align-items: flex-start;
+}
+
+.contact-section__email {
+  display: block;
+  font-family: var(--font-inter);
+  font-weight: 600;
+  font-size: var(--text-h4);
+  color: var(--color-inverted-text);
+  text-decoration: none;
+  margin-bottom: var(--space-sm);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .contact-section__email {
+    transition: color 150ms ease, opacity 150ms ease;
+  }
+}
+
+.contact-section__email:hover {
+  color: var(--color-inverted-text);
+  opacity: 0.75;
+}
+
+.contact-section__email:focus-visible {
+  outline: 2px solid var(--color-inverted-text);
+  outline-offset: 2px;
+  border-radius: 2px;
+}

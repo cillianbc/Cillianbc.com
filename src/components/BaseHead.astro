@@ -1,0 +1,92 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  canonicalUrl?: string;
+  noindex?: boolean;
+}
+
+const { title, description, canonicalUrl, noindex } = Astro.props;
+const siteUrl = 'https://cillianbc.com';
+const canonical = canonicalUrl || new URL(Astro.url.pathname, siteUrl).href;
+
+const websiteSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": `${siteUrl}/#website`,
+      "url": siteUrl,
+      "name": "Cillian BC",
+      "description": "Independent AI search consultant helping Irish businesses stay visible as search moves to AI-generated answers.",
+      "publisher": {
+        "@id": `${siteUrl}/#person`
+      },
+      "inLanguage": "en-IE"
+    },
+    {
+      "@type": "Person",
+      "@id": `${siteUrl}/#person`,
+      "name": "Cillian BC",
+      "url": siteUrl,
+      "jobTitle": "AI Search Consultant",
+      "description": "Independent AI search consultant working with Irish businesses on SEO, GEO, AEO, content engineering, and AI workflow design.",
+      "knowsAbout": [
+        "Generative Engine Optimisation",
+        "Answer Engine Optimisation",
+        "Search Engine Optimisation",
+        "AI Workflows",
+        "Content Engineering",
+        "Structured Data"
+      ],
+      "areaServed": {
+        "@type": "Country",
+        "name": "Ireland"
+      },
+      "email": "hello@cillianbc.com",
+      "image": {
+        "@type": "ImageObject",
+        "@id": `${siteUrl}/#personimage`,
+        "url": `${siteUrl}/images/cillian-portrait.png`
+      },
+      "sameAs": [
+        siteUrl
+      ]
+    }
+  ]
+};
+---
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex" />}
+<meta name="generator" content={Astro.generator} />
+
+<!-- Open Graph -->
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="en_IE" />
+<meta property="og:site_name" content="Cillian BC" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+
+<!-- Google Fonts preconnect -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+<!-- Font imports -->
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,600;9..144,700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<!-- Styles injected by parent layout via Astro CSS imports -->
+
+<!-- JSON-LD WebSite + Person schema -->
+<script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />

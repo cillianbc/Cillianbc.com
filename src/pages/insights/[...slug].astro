@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import AuthorBlock from '../../components/AuthorBlock.astro';
+
+export async function getStaticPaths() {
+  const articles = await getCollection('insights');
+  return articles.map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const { Content, headings } = await article.render();
+
+const siteUrl = 'https://cillianbc.com';
+const canonicalUrl = `${siteUrl}/insights/${article.slug}`;
+
+const tocItems = headings
+  .filter((h) => h.depth === 2)
+  .map((h) => ({ href: `#${h.slug}`, label: h.text }));
+
+const articleSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": article.data.title,
+  "description": article.data.description,
+  "datePublished": article.data.pubDate.toISOString(),
+  "dateModified": (article.data.updatedDate ?? article.data.pubDate).toISOString(),
+  "url": canonicalUrl,
+  "author": { "@id": `${siteUrl}/#person` },
+  "publisher": { "@id": `${siteUrl}/#website` },
+  "keywords": article.data.keyTopics?.join(', ') ?? '',
+  "inLanguage": "en-IE",
+});
+
+const formattedDate = article.data.pubDate.toLocaleDateString('en-IE', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+---
+<ArticleLayout
+  title={`${article.data.title} | Cillian BC`}
+  description={article.data.description}
+  canonicalUrl={canonicalUrl}
+  tocItems={tocItems}
+  schema={articleSchema}
+>
+  <div class="article-meta-block">
+    <span class="article-item__category">{article.data.category}</span>
+    <span class="article-meta__separator" aria-hidden="true">·</span>
+    <time datetime={article.data.pubDate.toISOString().split('T')[0]}>{formattedDate}</time>
+    <span class="article-meta__separator" aria-hidden="true">·</span>
+    <span>{article.data.readingTime} min read</span>
+  </div>
+  <Content />
+  <AuthorBlock />
+</ArticleLayout>

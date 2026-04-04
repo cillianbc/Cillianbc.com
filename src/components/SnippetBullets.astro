@@ -1,0 +1,12 @@
+---
+interface Props {
+  items: string[];
+  label?: string;
+}
+
+const { items, label } = Astro.props;
+---
+{label && <p class="snippet-bullets-label">{label}</p>}
+<ul class="snippet-bullets">
+  {items.map((item) => <li set:html={item} />)}
+</ul>

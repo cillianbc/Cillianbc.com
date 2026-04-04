@@ -1,0 +1,177 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SummaryIntro from '../components/SummaryIntro.astro';
+import KeyTakeaways from '../components/KeyTakeaways.astro';
+
+const summaryItems = [
+  '<strong>Google AI Overviews are active in Ireland</strong> and are pushing traditional organic results further down the page for commercial queries.',
+  '<strong>Businesses appearing in AI-generated answers</strong> are not there by luck — they have content that is structured, defined, and semantically clear to machine-reading systems.',
+  '<strong>Most Irish businesses have not yet optimised for AI search</strong>, which means there is a genuine early-mover window — but it is closing.',
+  '<strong>This is not a technology problem.</strong> It is a content and structure problem, and it is solvable without rebuilding your entire digital presence.',
+  '<strong>An independent consultant gives you one thing an agency cannot:</strong> a direct opinion on what actually needs doing, without a retainer to justify.',
+];
+
+const keyTakeawaysItems = [
+  '<strong>AI-powered search is changing which businesses customers discover first</strong>, and Irish businesses are behind the curve on this by approximately 12–18 months compared to the US market.',
+  '<strong>GEO, AEO, and SEO are now interconnected disciplines</strong> — a strategy that addresses only one of the three is incomplete.',
+  '<strong>The most effective AI search visibility strategy starts with a content and structure audit</strong>, not a technology purchase.',
+  '<strong>Irish businesses have a genuine early-mover advantage</strong> in AI search optimisation — the window exists now, but not indefinitely.',
+  '<strong>Working with a solo consultant means direct advice without vendor bias</strong> — the recommendation is always what is right for your specific situation.',
+];
+
+const pageSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebPage",
+      "@id": "https://cillianbc.com/#webpage",
+      "url": "https://cillianbc.com/",
+      "name": "AI Search Consultant for Irish Businesses | Cillian BC",
+      "description": "Independent AI search consultant helping Irish businesses stay visible as search moves from links to AI-generated answers. SEO, GEO, AEO, and content engineering.",
+      "isPartOf": { "@id": "https://cillianbc.com/#website" },
+      "inLanguage": "en-IE"
+    },
+    {
+      "@type": "ProfessionalService",
+      "@id": "https://cillianbc.com/#service",
+      "name": "Cillian BC — AI Search Consultant",
+      "url": "https://cillianbc.com/",
+      "description": "Independent AI search consultant providing SEO, Generative Engine Optimisation (GEO), Answer Engine Optimisation (AEO), content engineering, and AI workflow design for Irish businesses.",
+      "provider": { "@id": "https://cillianbc.com/#person" },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Ireland"
+      },
+      "serviceType": [
+        "Search Engine Optimisation",
+        "Generative Engine Optimisation",
+        "Answer Engine Optimisation",
+        "Content Engineering",
+        "AI Workflow Design"
+      ],
+      "email": "hello@cillianbc.com",
+      "inLanguage": "en-IE"
+    }
+  ]
+};
+---
+<BaseLayout
+  title="AI Search Consultant for Irish Businesses | Cillian BC"
+  description="Independent AI search consultant helping Irish businesses stay visible as search moves from links to AI-generated answers. SEO, GEO, AEO, and content engineering."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} slot="head" />
+
+  <!-- Hero section -->
+  <section class="hero section" aria-label="Introduction">
+    <div class="container container--full">
+      <!-- H1 is for SEO/schema; display statement is the visual hero text -->
+      <h1 class="visually-hidden">AI Search Consultant for Irish Businesses | Cillian BC</h1>
+      <div class="hero__body">
+        <div class="hero__text">
+          <p class="hero__statement">Search has changed more in the last 18 months than in the previous decade.</p>
+          <div class="hero__lead">
+            <p><strong>Search has changed more in the last 18 months than in the previous decade.</strong> When your customers ask Google, Perplexity, or Gemini a question related to your business, they are increasingly getting a direct answer — not a list of links. That answer comes from a small number of sources. If your business is not one of those sources, you are not in the conversation.</p>
+            <p><strong>Cillian BC</strong> is an independent AI search consultant working with Irish businesses and marketing teams. The work covers <strong>SEO</strong> (traditional search, which still matters), <a href="/aeo-geo/"><strong>Generative Engine Optimisation (GEO)</strong></a> (structuring content to be cited by AI systems), and <a href="/aeo-geo/#what-is-aeo"><strong>Answer Engine Optimisation (AEO)</strong></a> (appearing when customers ask questions directly). These three disciplines have converged. Treating them separately is the most common mistake Irish marketing teams are making right now.</p>
+            <p><strong>I help Irish businesses stay visible as search moves from links to AI answers — without the jargon, without the lock-in, and without pretending the technology is simpler than it is.</strong></p>
+          </div>
+          <div class="hero__cta-group">
+            <a href="mailto:hello@cillianbc.com" class="btn--primary">Start a conversation</a>
+          </div>
+        </div>
+        <aside class="hero__portrait-block" aria-label="About Cillian BC">
+          <img
+            src="/images/cillian-portrait.png"
+            alt="Cillian BC, AI Search Consultant"
+            class="hero__portrait"
+            width="150"
+            height="165"
+            loading="eager"
+          />
+          <p class="hero__portrait-name">Cillian BC</p>
+          <p class="hero__portrait-role">AI Search Consultant<br />Ireland</p>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- Summary Intro -->
+  <section class="section" aria-label="What you need to know">
+    <div class="container container--prose">
+      <h2>What You Need to Know</h2>
+      <SummaryIntro items={summaryItems} />
+    </div>
+  </section>
+
+  <!-- Services -->
+  <section class="section" aria-labelledby="services-heading">
+    <div class="container container--prose">
+      <h2 id="services-heading">The Services</h2>
+
+      <article class="service-article">
+        <h3>SEO That Holds Up as AI Changes the Rules</h3>
+        <p><strong>Traditional SEO</strong> — technical foundations, content strategy, on-page structure — remains the base layer of everything. The difference is that the standards AI systems use to evaluate trustworthiness and authority are stricter than what Google's algorithm tolerated five years ago. A <a href="/services/#service-technical-seo">technical SEO audit</a> now needs to consider both traditional ranking and AI citability.</p>
+      </article>
+
+      <article class="service-article">
+        <h3>GEO — Structured to Be Cited</h3>
+        <p><strong>Generative Engine Optimisation (GEO)</strong> is the practice of structuring content so that AI-powered search engines — Google AI Overviews, Perplexity, Gemini — retrieve and cite it when generating answers. GEO is not a replacement for SEO. It requires its own approach: definition blocks, extractable paragraphs, semantic markup, and entity consistency across your digital presence. <a href="/aeo-geo/">Complete guide to Generative Engine Optimisation for Irish businesses.</a></p>
+      </article>
+
+      <article class="service-article">
+        <h3>AI Workflows — Less Busywork, More Output</h3>
+        <p><a href="/services/#service-ai-workflow-design"><strong>AI workflow design</strong></a> means building practical systems — using tools like Claude, GPT-4, and Gemini — that reduce the time your team spends on repeatable content tasks. Not replacing your team. Removing the friction that stops them doing the work that matters.</p>
+      </article>
+
+      <article class="service-article">
+        <h3>Business Process Automation — Less Admin, More Business</h3>
+        <p><strong>Business process automation</strong> connects the software tools your business already uses so that data flows between them automatically — without manual re-entry, copy-pasting, or a person acting as the trigger. Orders, invoices, follow-ups, and notifications handled by the system, not by you. Built with <strong>n8n</strong>, <strong>Make</strong>, or <strong>Zapier</strong> depending on what the problem requires. Handed over with documentation, or maintained ongoing — whichever suits how your business works.</p>
+        <p><a href="/automation">Business process automation for Irish small businesses</a></p>
+      </article>
+    </div>
+  </section>
+
+  <!-- How I Work -->
+  <section class="section" aria-labelledby="how-i-work-heading">
+    <div class="container container--prose">
+      <h2 id="how-i-work-heading">How I Work</h2>
+      <p>Every engagement starts with a conversation, not a proposal. The first call is a diagnostic — I want to understand your situation before recommending anything. If the problem you have is not one I can help with, I will tell you plainly and point you in a better direction.</p>
+      <p>Engagements are scoped, not open-ended. There are no lock-in retainers, no black-box methodologies, and no work that happens offsite without your team understanding what was done and why. The goal is that your team understands the strategy well enough to continue it after my involvement ends.</p>
+    </div>
+  </section>
+
+  <!-- Who This Is For -->
+  <section class="section who-this-is-for" aria-labelledby="who-heading">
+    <div class="container container--prose">
+      <h2 id="who-heading">Who This Is For</h2>
+      <article>
+        <p><strong>Small and medium Irish businesses</strong> who need plain-English advice on whether — and how — AI search affects their visibility. If you are a 15-person company in Kerry wondering whether this is relevant to you, it probably is, and I can tell you within one conversation.</p>
+      </article>
+      <article>
+        <p><strong>Marketing leaders at Irish SaaS and tech companies</strong> who need to show a clear AI search strategy to their board or their CEO — and who need it to be defensible, not just impressive-sounding.</p>
+      </article>
+      <article>
+        <p><strong>Digital teams at Irish subsidiaries of European companies</strong> who are evaluating specialist AI/SEO consultants to complement an existing internal team. The work here is designed to operate alongside your team, not around them.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- Key Takeaways -->
+  <section class="section" aria-label="Key takeaways">
+    <div class="container container--prose">
+      <KeyTakeaways items={keyTakeawaysItems} />
+    </div>
+  </section>
+
+  <!-- Contact section -->
+  <section class="contact-section" id="contact">
+    <div class="container container--prose">
+      <h2 class="contact-section__heading">Let's work out if this is worth a conversation.</h2>
+      <p class="contact-section__lead">The first call is 30 minutes, free, and focused on your situation. If I'm not the right person, I'll tell you that and point you somewhere useful. No proposal until we've established there's something worth proposing.</p>
+      <div class="contact-section__methods">
+        <a class="contact-section__email" href="mailto:hello@cillianbc.com">hello@cillianbc.com</a>
+      </div>
+    </div>
+  </section>
+
+  <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
+</BaseLayout>

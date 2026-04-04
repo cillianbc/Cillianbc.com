@@ -1,0 +1,208 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import DefinitionBlock from '../components/DefinitionBlock.astro';
+import SummaryIntro from '../components/SummaryIntro.astro';
+import SnippetBullets from '../components/SnippetBullets.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import KeyTakeaways from '../components/KeyTakeaways.astro';
+import ContextualCta from '../components/ContextualCta.astro';
+
+const summaryItems = [
+  '<strong>Most small businesses are doing manually what software could do automatically</strong> — the problem is not a lack of tools, it is that the tools do not talk to each other.',
+  '<strong>Business process automation connects the systems you already use</strong> — so orders, customer records, invoices, and notifications flow without anyone having to move them by hand.',
+  '<strong>Tools like n8n, Make, and Zapier make this achievable for any business size</strong> — without building custom software or hiring a developer.',
+  '<strong>Engagements are scoped: build and hand over, or build and maintain</strong> — whichever suits how your business works.',
+  '<strong>The starting point is always a conversation about what your team does repeatedly</strong> — not a proposal for a system you do not understand yet.',
+];
+
+const automationExamplesItems = [
+  '<strong>Orders from an e-commerce platform</strong> automatically entered into Xero or Sage',
+  '<strong>New enquiry form submissions</strong> routed to CRM, inbox, and a follow-up sequence — without manual intervention',
+  '<strong>Invoice generation</strong> triggered when a job status changes in a project management tool',
+  '<strong>Stock or availability alerts</strong> sent to the right person when a threshold is crossed',
+  '<strong>Customer data kept in sync</strong> across two or more platforms without duplicate entry',
+  '<strong>Weekly summary reports</strong> generated and sent automatically from data that already exists',
+];
+
+const faqItems = [
+  {
+    id: 'what-is-business-process-automation',
+    question: 'What is business process automation?',
+    answer: '<strong>Business process automation</strong> is the practice of connecting software tools so that information flows between them automatically — without manual copying, re-entry, or a person acting as the trigger. It uses tools like n8n, Make, and Zapier to build workflows that run in the background, handling the repeatable mechanical tasks that currently take up your team\'s time.',
+  },
+  {
+    id: 'do-i-need-to-be-technical',
+    question: 'Do I need to be technical to work with you?',
+    answer: '<strong>No.</strong> The process audit and design conversations are in plain English. You do not need to know how the tools work — you need to know what your team does repeatedly. The technical implementation is handled entirely, and the handover documentation is written for a non-technical reader.',
+  },
+  {
+    id: 'what-tools-do-you-use',
+    question: 'What tools do you use?',
+    answer: '<strong>The tool depends on the problem.</strong> n8n is used for complex workflows requiring custom logic, multi-step orchestration, or on-premise hosting. Make is used for visual, multi-app workflows. Zapier is used for straightforward point-to-point connections. In some cases, AI tools — including Claude and GPT-4 — are incorporated into workflows where a step requires text processing, classification, or drafting. The choice is always based on what is right for your specific situation, not a preferred platform.',
+  },
+  {
+    id: 'what-happens-if-something-breaks',
+    question: 'What happens if something breaks?',
+    answer: '<strong>Every automation is documented with error handling instructions.</strong> For automations under ongoing maintenance, errors are monitored and addressed as part of the service. For handed-over automations, the documentation covers the most common failure modes and what to do when they occur. If something unexpected happens after handover and you need help, that is a conversation — not a locked door.',
+  },
+  {
+    id: 'how-do-i-know-if-worth-automating',
+    question: 'How do I know if my problem is worth automating?',
+    answer: '<strong>If your team does the same thing more than a few times a week, it is worth a conversation.</strong> The process audit is specifically designed to answer this question — what is genuinely automatable, what is not, and what would deliver the most value first. You do not need to arrive knowing the answer. That is what the first call is for.',
+  },
+  {
+    id: 'how-long-does-it-take',
+    question: 'How long does it take to build an automation?',
+    answer: '<strong>Scope determines duration.</strong> A simple two-system connection — an order from a website into an accounts package, for example — typically takes two to five days from audit to handover. A more complex multi-system workflow with conditional logic and error handling takes two to four weeks. Every engagement is scoped before it begins, with a clear timeline and deliverable agreed upfront.',
+  },
+  {
+    id: 'can-you-automate-multiple-systems',
+    question: 'Can you automate processes that involve data from multiple systems?',
+    answer: '<strong>Yes.</strong> Multi-system workflows — where data needs to move through three or more tools, or where different conditions trigger different actions — are handled by tools like n8n and Make specifically designed for that complexity. The design step before build is more important for these, but the outcome is the same: a documented workflow that runs automatically and is understandable to the people who own it.',
+  },
+];
+
+const keyTakeawaysItems = [
+  '<strong>Most Irish small businesses are doing manually what software could handle automatically</strong> — the entry cost is lower than most owners expect, and the time recovered is immediate.',
+  '<strong>Business process automation connects existing tools so data flows without re-entry, copy-pasting, or human triggers</strong> — using n8n, Make, Zapier, and where relevant, AI tools.',
+  '<strong>Engagements are scoped: build and hand over, or build and maintain</strong> — the choice is yours, and neither option creates a dependency you have not agreed to.',
+  '<strong>No complexity floor</strong> — from a simple three-step Zap to a multi-system n8n workflow, the solution matches the actual problem.',
+  '<strong>The starting point is a conversation about what your team does repeatedly</strong> — not a proposal for technology you have not asked for.',
+];
+
+const pageSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "@id": "https://cillianbc.com/automation/#service",
+      "name": "Business Process Automation for Irish Small Businesses",
+      "url": "https://cillianbc.com/automation/",
+      "description": "Business process automation for Irish small businesses — connecting the tools you already use so data flows automatically, without manual re-entry or copy-pasting. Built with n8n, Make, and Zapier.",
+      "provider": { "@id": "https://cillianbc.com/#person" },
+      "areaServed": { "@type": "Country", "name": "Ireland" },
+      "serviceType": [
+        "Business Process Automation",
+        "Workflow Automation",
+        "Systems Integration",
+        "n8n Development",
+        "Make Automation",
+        "Zapier Automation"
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://cillianbc.com/automation/#faq",
+      "mainEntity": faqItems.map((item) => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": item.answer.replace(/<[^>]+>/g, ''),
+        }
+      }))
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://cillianbc.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Business Process Automation", "item": "https://cillianbc.com/automation/" }
+      ]
+    }
+  ]
+};
+---
+<BaseLayout
+  title="Business Process Automation for Irish Small Businesses | Cillian BC"
+  description="Business process automation for Irish small businesses — connecting the tools you already use so data flows automatically, without manual re-entry or copy-pasting. Built with n8n, Make, and Zapier."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} slot="head" />
+
+  <div class="container container--prose" style="padding-top: var(--space-2xl);">
+
+    <h1>Business Process Automation for Irish Small Businesses | Cillian BC</h1>
+
+    <!-- Definition -->
+    <DefinitionBlock
+      term="Business Process Automation"
+      id="business-process-automation"
+      definition="the practice of connecting the software tools a business already uses so that information flows between them automatically, without manual re-entry, copy-pasting, or a person acting as the trigger. The goal is not to replace people. It is to remove the mechanical steps that slow them down and distract them from work that actually requires a human."
+    />
+
+    <!-- Summary Intro -->
+    <h2>What You Need to Know</h2>
+    <SummaryIntro items={summaryItems} />
+
+    <!-- Core Problem -->
+    <section id="core-problem" aria-labelledby="core-problem-heading">
+      <h2 id="core-problem-heading">The Core Problem</h2>
+      <p><strong>You are doing the same thing manually, repeatedly, because no one has set it up any other way.</strong> It is not that the task is complex — it is that it has always been done by hand, so it keeps getting done by hand. An order comes in and someone types it into the accounts system. A customer fills in a form and someone remembers to follow up. A job gets completed and someone eventually sends the invoice.</p>
+      <p><strong>The cost of this is invisible until it is not.</strong> When the volume is low, manual works fine. When it doubles, the same person is now doing twice the admin. When something slips — an order not entered, a follow-up not sent, an invoice not raised — the cost shows up as a customer complaint, a cash flow gap, or a Friday afternoon catching up on things that should have happened Tuesday.</p>
+      <p><strong>The fix is rarely complicated.</strong> In most cases, the data is already in one system — it just is not getting to the next one automatically. Connecting those two systems is a matter of hours, not weeks. The automation runs quietly in the background, and the person who was doing it manually gets their time back.</p>
+    </section>
+
+    <!-- What This Service Includes -->
+    <section id="what-this-service-includes" aria-labelledby="service-includes-heading">
+      <h2 id="service-includes-heading">What This Service Includes</h2>
+
+      <article id="service-process-audit" class="service-article">
+        <h3>1. Process Audit</h3>
+        <p><strong>Before anything is built, the process needs to be understood.</strong> A process audit maps what your team does repeatedly — the tasks that involve moving information from one place to another, sending something when something else happens, or updating a record that already exists somewhere else. Most businesses discover two or three automation candidates in the first conversation that they had not considered automatable.</p>
+        <p><strong>The audit produces a prioritised list</strong> of what is worth automating, in what order, and why — with a plain-English explanation of how each automation would work. No proposal for systems you have not asked for. No technology for its own sake.</p>
+      </article>
+
+      <article id="service-automation-design" class="service-article">
+        <h3>2. Automation Design</h3>
+        <p><strong>An automation built without a clear design breaks in the edge cases.</strong> Before a single workflow is configured, the logic is mapped: what triggers the process, what data needs to move, where it needs to go, and what should happen when something unexpected occurs. For multi-step automations connecting more than two systems, this design step prevents the most common failure — a workflow that works for 90% of cases and silently fails on the other 10%.</p>
+      </article>
+
+      <article id="service-build" class="service-article">
+        <h3>3. Build</h3>
+        <p><strong>Automations are built using the right tool for the specific problem</strong> — n8n for complex, multi-step workflows requiring custom logic or on-premise hosting; Make for visual, multi-app orchestration; Zapier for straightforward point-to-point connections where speed of setup matters more than flexibility. There is no preferred tool — the choice is made based on your systems, your technical comfort level, and what will be easiest to maintain.</p>
+        <p><strong>Common automations built for Irish small businesses:</strong></p>
+        <SnippetBullets items={automationExamplesItems} />
+      </article>
+
+      <ContextualCta
+        text="Not sure if your problem fits any of these?"
+        href="mailto:hello@cillianbc.com"
+        linkText="describe it in an email and I will tell you plainly"
+      />
+
+      <article id="service-handover" class="service-article">
+        <h3>4. Handover</h3>
+        <p><strong>Every automation comes with documentation that explains how it works, how to modify it, and what to check if something goes wrong.</strong> The goal is that you or someone on your team can understand the system — not that you depend on me to keep it running. A short walkthrough session is included as standard, covering the key points a non-technical person needs to know to feel confident the system is working.</p>
+      </article>
+
+      <article id="service-maintenance" class="service-article">
+        <h3>5. Ongoing Maintenance (Optional)</h3>
+        <p><strong>For businesses who do not want to manage the automation themselves</strong>, ongoing maintenance covers monitoring, error handling, and updates when the connected tools change their APIs or configurations. This is not a default retainer — it is an option for businesses who want the benefit of automation without the overhead of managing it. If you want to own it fully after handover, that is the right outcome too.</p>
+      </article>
+    </section>
+
+    <!-- How I Work -->
+    <section id="how-i-work-automation" aria-labelledby="how-i-work-heading">
+      <h2 id="how-i-work-heading">How I Work</h2>
+      <p><strong>Every engagement starts with a conversation about what your team actually does.</strong> Not a form, not a requirements document — a direct conversation about where time is being lost, where data is being re-entered, and what a better version of those processes would look like. That conversation is free.</p>
+      <p><strong>Engagements are scoped before any work begins.</strong> You will know what is being built, what it will do, and what it will cost before anything starts. There are no surprises mid-project, and there is no dependency on continued engagement to access what has been built.</p>
+      <p><strong>Simple problems get simple solutions.</strong> A three-step Zap that solves a genuine problem is better than a complex n8n workflow that is hard to maintain. The complexity of the solution matches the complexity of the problem — not the complexity of what is technically possible.</p>
+    </section>
+
+    <!-- FAQ -->
+    <FaqAccordion topic="Business Process Automation" items={faqItems} />
+
+    <!-- Key Takeaways -->
+    <KeyTakeaways items={keyTakeawaysItems} />
+
+  </div>
+
+  <section class="contact-section" id="contact">
+    <div class="container container--prose">
+      <h2 class="contact-section__heading">Let's work out if this is worth a conversation.</h2>
+      <p class="contact-section__lead">The first call is 30 minutes, free, and focused on your situation. Describe what your team does repeatedly and we will work out together whether it is automatable, how long it would take, and what it would cost. No proposal until we have established there is something worth proposing.</p>
+      <div class="contact-section__methods">
+        <a class="contact-section__email" href="mailto:hello@cillianbc.com">hello@cillianbc.com</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

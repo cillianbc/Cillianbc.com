@@ -1,0 +1,84 @@
+---
+---
+<header class="site-nav" role="banner">
+  <nav class="site-nav__inner" aria-label="Main navigation">
+    <a href="/" class="site-nav__logo" aria-label="Cillian BC — home">Cillian BC</a>
+
+    <button
+      class="site-nav__hamburger"
+      aria-expanded="false"
+      aria-controls="site-nav__menu"
+      aria-label="Open navigation menu"
+      id="nav-hamburger"
+    >
+      Menu
+    </button>
+
+    <ul class="site-nav__menu" id="site-nav__menu" role="list">
+      <li><a href="/" class="site-nav__link">Home</a></li>
+      <li><a href="/services" class="site-nav__link">Services</a></li>
+      <li><a href="/automation" class="site-nav__link">Automation</a></li>
+      <li><a href="/aeo-geo" class="site-nav__link">AEO/GEO</a></li>
+      <li><a href="/about" class="site-nav__link">About</a></li>
+      <li><a href="/insights" class="site-nav__link">Insights</a></li>
+      <li>
+        <a href="mailto:hello@cillianbc.com" class="btn--primary site-nav__cta">Start a conversation</a>
+      </li>
+    </ul>
+  </nav>
+</header>
+
+<script>
+  (function () {
+    const nav = document.querySelector('.site-nav') as HTMLElement | null;
+    const hamburger = document.getElementById('nav-hamburger') as HTMLButtonElement | null;
+    const menu = document.getElementById('site-nav__menu') as HTMLElement | null;
+
+    // Scroll class toggle
+    if (nav) {
+      const handleScroll = () => {
+        if (window.scrollY > 0) {
+          nav.classList.add('is-scrolled');
+        } else {
+          nav.classList.remove('is-scrolled');
+        }
+      };
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      handleScroll();
+
+      // Set --nav-height CSS custom property
+      const updateNavHeight = () => {
+        const height = nav.offsetHeight;
+        document.documentElement.style.setProperty('--nav-height', height + 'px');
+      };
+      updateNavHeight();
+      window.addEventListener('resize', updateNavHeight, { passive: true });
+    }
+
+    // Mobile hamburger toggle
+    if (hamburger && menu) {
+      hamburger.addEventListener('click', () => {
+        const expanded = hamburger.getAttribute('aria-expanded') === 'true';
+        hamburger.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        hamburger.setAttribute('aria-label', expanded ? 'Open navigation menu' : 'Close navigation menu');
+        menu.classList.toggle('is-open', !expanded);
+
+        // Move focus to first menu item when opening
+        if (!expanded) {
+          const firstLink = menu.querySelector('a') as HTMLAnchorElement | null;
+          if (firstLink) firstLink.focus();
+        }
+      });
+
+      // Close menu on Escape
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && menu.classList.contains('is-open')) {
+          hamburger.setAttribute('aria-expanded', 'false');
+          hamburger.setAttribute('aria-label', 'Open navigation menu');
+          menu.classList.remove('is-open');
+          hamburger.focus();
+        }
+      });
+    }
+  })();
+</script>

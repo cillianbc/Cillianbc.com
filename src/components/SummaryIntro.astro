@@ -1,0 +1,16 @@
+---
+interface Props {
+  items: string[];
+}
+
+const { items } = Astro.props;
+
+if (items.length < 3 || items.length > 5) {
+  throw new Error(`SummaryIntro requires 3–5 items. Received ${items.length}.`);
+}
+---
+<section id="summary-intro" aria-label="What you need to know">
+  <ul class="summary-intro">
+    {items.map((item) => <li set:html={item} />)}
+  </ul>
+</section>

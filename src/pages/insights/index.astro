@@ -1,0 +1,109 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+
+const allArticles = await getCollection('insights');
+const sorted = allArticles.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const featured = sorted.find((a) => a.data.featured);
+const rest = sorted.filter((a) => !a.data.featured);
+
+const categories = ['All', 'SEO', 'GEO', 'AEO', 'AI Workflows'];
+
+function getExcerpt(body: string): string {
+  const lines = body.split('\n');
+  const para = lines.find((line) => {
+    const t = line.trim();
+    return t.length > 0 && !/^[#!>\-\*\|{%<]/.test(t) && !t.startsWith('---');
+  });
+  return para ? para.replace(/[*_`[\]()]/g, '').trim() : '';
+}
+---
+<BaseLayout
+  title="Insights | Cillian BC"
+  description="Articles on GEO, AEO, SEO, and AI workflows for Irish businesses."
+>
+  <section class="insights-index section">
+    <h1>Insights</h1>
+
+    <nav class="insights-filter" aria-label="Filter articles by category">
+      {categories.map((cat, i) => (
+        <>
+          {i > 0 && <span class="filter-separator" aria-hidden="true">·</span>}
+          <a
+            href={cat === 'All' ? '/insights' : `/insights?category=${encodeURIComponent(cat)}`}
+            class="filter-link"
+            data-filter={cat}
+          >
+            {cat}
+          </a>
+        </>
+      ))}
+    </nav>
+
+    {featured && (
+      <div data-article-category={featured.data.category}>
+        <ArticleCard
+          title={featured.data.title}
+          href={`/insights/${featured.slug}`}
+          category={featured.data.category}
+          excerpt={getExcerpt(featured.body)}
+          pubDate={featured.data.pubDate}
+          readingTime={featured.data.readingTime}
+          featured={true}
+          keyTopics={featured.data.keyTopics}
+        />
+      </div>
+    )}
+
+    {rest.length > 0 && (
+      <ol class="article-list" role="list">
+        {rest.map((article) => (
+          <li data-article-category={article.data.category}>
+            <ArticleCard
+              title={article.data.title}
+              href={`/insights/${article.slug}`}
+              category={article.data.category}
+              excerpt={getExcerpt(article.body)}
+              pubDate={article.data.pubDate}
+              readingTime={article.data.readingTime}
+            />
+          </li>
+        ))}
+      </ol>
+    )}
+
+    {sorted.length === 0 && (
+      <p class="insights-empty">Nothing published here yet. Check back shortly.</p>
+    )}
+  </section>
+</BaseLayout>
+
+<script>
+  (function () {
+    const params = new URLSearchParams(window.location.search);
+    const active = params.get('category') || 'All';
+
+    // Mark active filter link
+    document.querySelectorAll<HTMLAnchorElement>('.filter-link').forEach((link) => {
+      const cat = link.dataset.filter;
+      if (cat === active) {
+        link.setAttribute('aria-current', 'true');
+      }
+    });
+
+    // Show/hide articles
+    if (active !== 'All') {
+      document.querySelectorAll<HTMLElement>('[data-article-category]').forEach((el) => {
+        if (el.dataset.articleCategory !== active) {
+          el.hidden = true;
+        }
+      });
+    } else {
+      // Ensure all visible when no filter
+      document.querySelectorAll<HTMLElement>('[data-article-category]').forEach((el) => {
+        el.hidden = false;
+      });
+    }
+  })();
+</script>

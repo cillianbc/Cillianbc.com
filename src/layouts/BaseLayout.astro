@@ -1,0 +1,33 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import SkipLink from '../components/SkipLink.astro';
+import SiteNav from '../components/SiteNav.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import '../styles/global.css';
+import '../styles/typography.css';
+import '../styles/components.css';
+import '../styles/utilities.css';
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalUrl?: string;
+  noindex?: boolean;
+}
+
+const { title, description, canonicalUrl, noindex } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en-IE">
+<head>
+  <BaseHead title={title} description={description} canonicalUrl={canonicalUrl} noindex={noindex} />
+</head>
+<body>
+  <SkipLink />
+  <SiteNav />
+  <main id="main-content">
+    <slot />
+  </main>
+  <SiteFooter />
+</body>
+</html>

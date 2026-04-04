@@ -1,0 +1,12 @@
+---
+interface Props {
+  term: string;
+  id: string;
+  definition: string;
+}
+
+const { term, id, definition } = Astro.props;
+---
+<section class="definition-block" id="definition" aria-label={`Definition of ${term}`}>
+  <p><dfn id={`dfn-${id}`}><strong>{term}</strong></dfn> — {definition}</p>
+</section>

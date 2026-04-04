@@ -1,0 +1,304 @@
+---
+import ArticleLayout from '../layouts/ArticleLayout.astro';
+import DefinitionBlock from '../components/DefinitionBlock.astro';
+import SummaryIntro from '../components/SummaryIntro.astro';
+import ComparisonTable from '../components/ComparisonTable.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import KeyTakeaways from '../components/KeyTakeaways.astro';
+import ContextualCta from '../components/ContextualCta.astro';
+
+const summaryItems = [
+  '<strong>AI-powered search is changing which businesses customers find</strong> — Google AI Overviews, Perplexity, and Gemini are now generating direct answers to commercial queries, and those answers come from a small number of authoritative sources.',
+  '<strong>GEO and AEO are distinct from SEO</strong>, requiring different content structures, different technical implementations, and different success metrics.',
+  '<strong>Irish businesses are behind the curve by 12–18 months</strong> compared to the US market on AI search adoption — this is an early-mover window, not a crisis.',
+  '<strong>The businesses appearing in AI-generated answers have structured their content</strong> using definition blocks, extractable paragraphs, Schema.org markup, and consistent entity signals.',
+  '<strong>A content and structure audit is the first practical step</strong> — before investing in new content, understand which existing content can be restructured for AI citation.',
+];
+
+const tableHeaders = ['Dimension', 'Traditional SEO', 'GEO', 'AEO'];
+const tableRows = [
+  {
+    header: 'Primary goal',
+    cells: [
+      'Ranking in organic search results',
+      'Being cited in AI-generated answers',
+      'Appearing as the answer to direct questions',
+    ],
+    highlight: false,
+  },
+  {
+    header: 'Success metric',
+    cells: [
+      'Position in SERPs, organic traffic',
+      'Citation frequency in AI Overviews, Perplexity, Gemini',
+      'Featured snippet capture, voice answer rate',
+    ],
+    highlight: false,
+  },
+  {
+    header: 'Content requirement',
+    cells: [
+      'Relevant, well-structured, linked',
+      'Extractable paragraphs, definition blocks, entity consistency',
+      'FAQ structure, question-intent alignment',
+    ],
+    highlight: false,
+  },
+  {
+    header: 'Technical requirement',
+    cells: [
+      'Technical health, page speed, canonical structure',
+      'Schema.org markup (Service, Article, FAQPage)',
+      'FAQPage JSON-LD, Speakable schema',
+    ],
+    highlight: false,
+  },
+  {
+    header: 'Irish market status',
+    cells: [
+      'Widely understood; competitive',
+      'Poorly understood; low adoption',
+      'Almost entirely unadopted',
+    ],
+    highlight: true,
+  },
+];
+
+const faqItems = [
+  {
+    id: 'what-is-geo',
+    question: 'What is Generative Engine Optimisation (GEO)?',
+    answer: '<strong>Generative Engine Optimisation (GEO)</strong> is the practice of structuring content so that AI-powered search engines — including Google AI Overviews, Perplexity, and Gemini — retrieve and cite it when generating answers to user queries. GEO requires content to be formatted for machine extraction: self-contained paragraphs, clearly defined terms, and consistent entity signals across a business\'s digital presence.',
+  },
+  {
+    id: 'what-is-aeo',
+    question: 'What is Answer Engine Optimisation (AEO)?',
+    answer: '<strong>Answer Engine Optimisation (AEO)</strong> is the discipline of optimising content for AI systems that respond to direct questions. Where GEO addresses the broad structural requirements for AI citation, AEO focuses specifically on question-intent alignment — ensuring that when a user asks an AI assistant a question your business can answer authoritatively, your content is the one retrieved.',
+  },
+  {
+    id: 'geo-vs-seo',
+    question: 'What is the difference between GEO and SEO?',
+    answer: '<strong>Traditional SEO</strong> aims to improve a website\'s ranking in traditional search results pages. <strong>GEO</strong> aims to make content eligible for citation in AI-generated answers. A business can rank well in traditional search and not appear in any AI answer — because the content is not structured for machine extraction. GEO requires additional structural and semantic work on top of a technically sound SEO foundation.',
+  },
+  {
+    id: 'do-irish-businesses-need-geo-aeo',
+    question: 'Do Irish businesses need GEO and AEO?',
+    answer: '<strong>Any Irish business whose customers search online before making a purchasing decision is affected by AI search.</strong> Google AI Overviews are active in Ireland and are changing which businesses appear at the top of commercial queries. Businesses that do not optimise for AI citation are losing visibility to competitors who have — often without realising it. The scale of impact depends on the query volume in your specific market.',
+  },
+  {
+    id: 'how-long-to-appear-in-ai-answers',
+    question: 'How long does it take to appear in AI-generated answers?',
+    answer: '<strong>AI citation is not instantaneous.</strong> After implementing GEO changes, expect a lag of four to twelve weeks before AI systems begin consistently retrieving and citing the restructured content. The lag reflects the time required for AI systems to re-crawl, re-index, and re-evaluate the content against their authority signals. Citation frequency will increase gradually, not overnight.',
+  },
+  {
+    id: 'perplexity-vs-google-ai-overviews',
+    question: 'What is the difference between Perplexity and Google AI Overviews?',
+    answer: '<strong>Google AI Overviews</strong> appear at the top of Google search results for queries where Google determines that an AI-generated summary will be more useful than a list of links. They draw on Google\'s index and are generated by Gemini. <strong>Perplexity</strong> is a standalone AI search engine that competes with Google — it generates answers by retrieving live web content and synthesising it with its training data. Optimising for both requires the same structural foundation, with some query-specific differences in FAQ structure and citation signals.',
+  },
+  {
+    id: 'geo-aeo-small-businesses',
+    question: 'Is GEO and AEO relevant to small Irish businesses?',
+    answer: '<strong>GEO and AEO are relevant to any Irish business whose customers use AI tools to find services or make purchasing decisions.</strong> The scale of the implementation adjusts to the size of the business — a 15-person professional services firm does not need the same scope of work as a 500-person company. For smaller businesses, a well-structured FAQ section and a citation audit are often the highest-impact starting points.',
+  },
+];
+
+const keyTakeawaysItems = [
+  '<strong>Generative Engine Optimisation (GEO) is now a distinct discipline from traditional SEO</strong>, requiring content to be structured for AI extraction rather than for human browsing or traditional search ranking.',
+  '<strong>Answer Engine Optimisation (AEO) focuses specifically on question-intent alignment</strong>, ensuring a business appears as the authoritative answer when customers ask AI systems direct questions.',
+  '<strong>Google AI Overviews are active in Ireland</strong> and are changing which businesses appear at the top of commercial search results — businesses that have not optimised for AI citation are losing ground to those that have.',
+  '<strong>Irish B2B businesses have a genuine early-mover window in GEO and AEO</strong>, with adoption lagging 12–18 months behind the US market — the advantage compounds over time and is finite.',
+  '<strong>A <a href="/services/#service-aeo">citation audit</a> is the practical first step</strong> — understanding exactly which queries your business appears in and which it does not is the baseline for any GEO or AEO strategy.',
+];
+
+const pageSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://cillianbc.com/aeo-geo/#article",
+      "headline": "Generative Engine Optimisation (GEO) and Answer Engine Optimisation (AEO) for Irish Businesses",
+      "description": "A complete guide to GEO and AEO for Irish businesses — how AI search works, how it differs from traditional SEO, and what Irish marketing teams need to do now.",
+      "url": "https://cillianbc.com/aeo-geo/",
+      "author": { "@id": "https://cillianbc.com/#person" },
+      "publisher": { "@id": "https://cillianbc.com/#person" },
+      "datePublished": "2026-03-27",
+      "dateModified": "2026-03-27",
+      "inLanguage": "en-IE",
+      "isPartOf": { "@id": "https://cillianbc.com/#website" }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://cillianbc.com/aeo-geo/#faq",
+      "mainEntity": faqItems.map((item) => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": item.answer.replace(/<[^>]+>/g, ''),
+        }
+      }))
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://cillianbc.com/" },
+        { "@type": "ListItem", "position": 2, "name": "AEO/GEO", "item": "https://cillianbc.com/aeo-geo/" }
+      ]
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "https://cillianbc.com/aeo-geo/#dfn-geo",
+      "name": "Generative Engine Optimisation",
+      "alternateName": "GEO",
+      "description": "The practice of structuring content so that AI-powered search engines retrieve and cite it when generating responses to user queries. GEO is a distinct discipline from traditional SEO, requiring content to be formatted for machine extraction rather than for human browsing.",
+      "inDefinedTermSet": { "@id": "https://cillianbc.com/aeo-geo/" }
+    },
+    {
+      "@type": "DefinedTerm",
+      "@id": "https://cillianbc.com/aeo-geo/#dfn-aeo",
+      "name": "Answer Engine Optimisation",
+      "alternateName": "AEO",
+      "description": "The discipline of optimising content specifically so that AI systems designed to respond to direct questions — including Google AI Overviews, Perplexity, and voice assistants — retrieve and surface it as the authoritative answer. AEO focuses on question-intent alignment, FAQ structure, and semantic precision.",
+      "inDefinedTermSet": { "@id": "https://cillianbc.com/aeo-geo/" }
+    }
+  ]
+};
+---
+<ArticleLayout
+  title="Generative Engine Optimisation (GEO) and Answer Engine Optimisation (AEO) for Irish Businesses | Cillian BC"
+  description="A complete guide to GEO and AEO for Irish businesses — how AI search works, how it differs from traditional SEO, and what Irish marketing teams need to do now."
+  canonicalUrl="https://cillianbc.com/aeo-geo/"
+>
+  <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
+
+  <h1>Generative Engine Optimisation (GEO) and Answer Engine Optimisation (AEO) for Irish Businesses</h1>
+
+  <div class="article-meta-block" itemprop="author" itemscope itemtype="https://schema.org/Person">
+    <span itemprop="name">Cillian BC</span>
+    <span aria-hidden="true">·</span>
+    <time itemprop="datePublished" datetime="2026-03-27">March 2026</time>
+  </div>
+
+  <!-- Definitions -->
+  <section id="definition" aria-labelledby="definitions-heading">
+    <h2 id="definitions-heading">Definitions</h2>
+    <DefinitionBlock
+      term="Generative Engine Optimisation (GEO)"
+      id="geo"
+      definition="the practice of structuring content so that AI-powered search engines retrieve and cite it when generating responses to user queries. GEO is a distinct discipline from traditional SEO, requiring content to be formatted for machine extraction rather than for human browsing."
+    />
+    <DefinitionBlock
+      term="Answer Engine Optimisation (AEO)"
+      id="aeo"
+      definition="the discipline of optimising content specifically so that AI systems designed to respond to direct questions — including Google AI Overviews, Perplexity, and voice assistants — retrieve and surface it as the authoritative answer. AEO focuses on question-intent alignment, FAQ structure, and semantic precision."
+    />
+  </section>
+
+  <!-- Summary Intro -->
+  <h2 id="summary-intro">What You Need to Know</h2>
+  <SummaryIntro items={summaryItems} />
+
+  <!-- What Is GEO -->
+  <section id="what-is-geo" aria-labelledby="what-is-geo-heading">
+    <h2 id="what-is-geo-heading">What Is Generative Engine Optimisation (GEO)?</h2>
+    <p><strong>Generative Engine Optimisation (GEO) is the practice of structuring content so that AI-powered search engines retrieve and cite it when generating responses.</strong> It differs from traditional SEO in that the goal is AI citation, not search ranking. A business can rank on the first page of Google and still not appear in any AI-generated answer — because its content is not structured to be extracted by machine-reading systems.</p>
+    <p><strong>GEO works at the intersection of content structure, semantic markup, and entity consistency.</strong> An AI system generating an answer to a query draws on content that it can parse cleanly — content with self-contained paragraphs, clearly defined terms, and consistent labelling across multiple authoritative sources. Content that is well-written but structurally ambiguous will be skipped in favour of content that is easier to process.</p>
+    <p><strong>The businesses being cited in AI answers right now have not necessarily done more work than their competitors.</strong> In many cases, they have done the same amount of work with a different structure. A well-written paragraph that opens with its key claim, defines its terms, and contains no cross-references to content elsewhere on the page is significantly more likely to be extracted than a paragraph that requires the reader to hold prior context.</p>
+
+    <h3>The Three Elements of GEO</h3>
+    <p><strong>1. Extractable content structure.</strong> Every paragraph that carries a key claim must open with a complete, self-contained sentence. The first sentence of a paragraph is the most commonly extracted unit. A paragraph that begins with "This is important because..." requires prior context and cannot be cleanly cited. A paragraph that begins "Structured data is important because AI systems use it to identify content type and authority" is immediately usable.</p>
+    <p><strong>2. Semantic markup (Schema.org).</strong> Structured data tells AI systems explicitly what your content is about, who produced it, and what type of entity it represents. A <code>Service</code> schema tells AI systems that a page describes a commercial service. A <code>FAQPage</code> schema tells them that the content contains answers to specific questions. A <code>Person</code> schema establishes the author as a named individual with verifiable expertise. Without these signals, AI systems must infer — and inference is less reliable than declaration.</p>
+    <p><strong>3. Entity consistency.</strong> An AI system building a knowledge graph about your business needs to see the same name, description, and attributes across your website, your Google Business Profile, your LinkedIn profile, and any third-party mentions. Inconsistency — different descriptions of what you do, varying versions of your business name — reduces confidence in your authority and lowers citation probability.</p>
+  </section>
+
+  <!-- What Is AEO -->
+  <section id="what-is-aeo" aria-labelledby="what-is-aeo-heading">
+    <h2 id="what-is-aeo-heading">What Is Answer Engine Optimisation (AEO)?</h2>
+    <p><strong>Answer Engine Optimisation (AEO) is the discipline of making content visible to AI systems that respond to direct questions.</strong> Where GEO concerns the broad structural requirements for AI citation, AEO focuses specifically on question-intent alignment — ensuring that when a user asks an AI assistant a question your business can authoritatively answer, your content provides the answer the system retrieves.</p>
+    <p><strong>AEO is particularly relevant for businesses with a strong FAQ dimension</strong> — professional services firms, specialist manufacturers, financial advisors, and anyone whose customers make significant decisions after a research process. If your customers ask questions before they buy, AEO is the discipline of making sure your answers are the ones AI systems trust.</p>
+
+    <h3>The Components of AEO</h3>
+    <p><strong>Question-intent mapping</strong> is the process of identifying the specific questions your target customers are asking AI systems. These are not always the same as traditional keyword queries. A user who searches "Dublin accountant" on Google may ask Perplexity "what should I look for when choosing an accountant for a small business in Ireland?" Optimising for the second query requires different content than optimising for the first.</p>
+    <p><strong>FAQ architecture</strong> is the structural implementation of AEO. A FAQ section that passes the AEO standard has questions that match real user queries (verified against Google's People Also Ask, AlsoAsked.com, and direct AI research), answers that are self-contained (a reader arriving only at the answer can understand it without reading the surrounding page), and answers that are concise (one to three sentences — longer answers belong in body content, not in FAQ sections).</p>
+    <p><strong>Speakable schema</strong> marks the sections of your content that are appropriate for AI voice assistants to read aloud. For a business targeting local Irish customers, speakable schema is particularly relevant — voice search queries in Ireland tend to be conversational and location-specific.</p>
+  </section>
+
+  <!-- GEO vs SEO -->
+  <section id="geo-vs-seo" aria-labelledby="geo-vs-seo-heading">
+    <h2 id="geo-vs-seo-heading">The Difference Between GEO, AEO, and Traditional SEO</h2>
+    <p><strong>Traditional SEO, GEO, and AEO are not competing approaches — they are sequential layers of the same discipline.</strong></p>
+
+    <ComparisonTable
+      caption="This table compares three disciplines across five dimensions. Irish market status reflects the state of adoption as of March 2026."
+      headers={tableHeaders}
+      rows={tableRows}
+    />
+
+    <p><strong>Traditional SEO remains necessary but is no longer sufficient.</strong> A business that has invested in traditional SEO has the <a href="/services/#service-technical-seo">technical foundation</a> required for GEO and AEO — but that foundation alone does not make content eligible for AI citation. GEO and AEO require additional structural and semantic work on top of a technically sound site.</p>
+    <p><strong>GEO and AEO are not the same thing</strong>, despite being frequently conflated. GEO addresses the broad structural requirements for AI systems to extract and cite content. AEO addresses the specific requirement of appearing as an answer to a direct question. A business can have strong GEO and weak AEO if its content is well-structured but not question-oriented.</p>
+  </section>
+
+  <!-- How AI Search Works -->
+  <section id="how-ai-search-works" aria-labelledby="how-ai-search-heading">
+    <h2 id="how-ai-search-heading">How AI Search Engines Work — The Technical Reality</h2>
+    <p><strong>AI search engines do not retrieve content the way traditional search engines do.</strong> A traditional search engine crawls pages, indexes content, and ranks results based on signals including relevance, authority, and technical quality. An AI search engine generates a response by drawing on its training data and, increasingly, on live retrieval from the web — a process called <strong>Retrieval-Augmented Generation (RAG)</strong>.</p>
+    <p><strong>Retrieval-Augmented Generation (RAG)</strong> is the process by which AI systems retrieve specific pieces of content from the web to supplement their training data when generating answers. A system using RAG selects content based on its relevance to the query, its structural clarity, and the authority signals associated with the source. Content that is structurally ambiguous — that requires inference to extract meaning — is passed over in favour of content that is immediately usable.</p>
+    <p><strong>AI systems prefer content that can be used verbatim.</strong> A self-contained paragraph that states a complete idea in one to four sentences is significantly more likely to be extracted than a paragraph that requires the reader to hold prior context. This is why the extractable paragraph standard is the foundation of GEO — not a nice-to-have, but a prerequisite.</p>
+    <p><strong>Authority signals determine which sources are trusted.</strong> An AI system drawing on live web content to generate an answer applies a weighting to sources based on the authority signals it can verify: consistent entity data, structured markup, inbound links from authoritative sources, and published author attribution. A business with a clear, consistent digital presence will outperform a business with better content but weaker entity signals.</p>
+  </section>
+
+  <!-- GEO and AEO for Irish Businesses -->
+  <section id="geo-aeo-ireland" aria-labelledby="geo-aeo-ireland-heading">
+    <h2 id="geo-aeo-ireland-heading">GEO and AEO for Irish Businesses</h2>
+    <p><strong>Irish businesses are in an unusual position with respect to AI search.</strong> The technology is not new — <strong>Google AI Overviews</strong> launched in the US in May 2024 and have been active in Ireland since late 2024. But Irish business adoption of GEO and AEO strategies lags the US by approximately 12–18 months. For early movers, this creates a genuine structural advantage.</p>
+    <p><strong>The Irish search market has specific characteristics that affect GEO and AEO strategy.</strong> Irish commercial queries often contain location signals ("accountant Dublin," "engineering firm Cork") and the local market is small enough that being cited for a high-value query can directly translate to a significant proportion of available business. The stakes of appearing — or not appearing — in an AI-generated answer are higher in a small market than in a large one.</p>
+    <p><strong>Irish B2B buyers are using AI search tools.</strong> A marketing director in Sandyford asking Perplexity for a recommendation on a specialist consultant is not an edge case — it is increasingly the first step in a research process that previously started with Google. The businesses appearing in that answer are the ones that have structured their content to be cited.</p>
+
+    <h3>Why the Irish Market Is Behind — and What It Means for Early Movers</h3>
+    <p><strong>Most Irish digital agencies are not yet providing GEO or AEO as a service.</strong> This is not a criticism — the discipline is new enough that specialised expertise in the Irish market is genuinely rare. It means that the businesses who move first are not competing against a well-resourced field. The structural advantage of early adoption compounds over time: a business with 12 months of established AI citation has an authority signal that a new entrant cannot quickly replicate.</p>
+    <p><strong>The window for early-mover advantage is real but not indefinite.</strong> As AI search becomes more mainstream — as more Irish businesses recognise that it is changing their customers' behaviour — the field will become more competitive. The businesses that establish citation authority now will have a structural head start that is difficult to overcome.</p>
+    <p><strong>Enterprise Ireland-supported businesses and companies at Series A and beyond</strong> are the most likely to have the content volume and digital presence that makes GEO work immediately. Smaller businesses with limited existing content can still benefit from AEO — a well-structured FAQ section is achievable regardless of content scale.</p>
+  </section>
+
+  <ContextualCta
+    text="If you want to know which of these applies to your situation,"
+    href="mailto:hello@cillianbc.com"
+    linkText="that's what the first call is for"
+  />
+
+  <!-- How to Optimise -->
+  <section id="how-to-optimise" aria-labelledby="how-to-optimise-heading">
+    <h2 id="how-to-optimise-heading">How to Optimise Content for AI Search Engines</h2>
+    <p><strong>Optimising existing content for AI search is a structured process, not a single action.</strong> The steps below apply to a business with existing web content looking to improve its AI citation rate.</p>
+
+    <ol class="how-to-steps">
+      <li>
+        <h3>Conduct a Citation Audit</h3>
+        <p><strong>A <a href="/services/#service-aeo">citation audit</a> establishes a baseline</strong> — which queries your business currently appears in, and which it does not. Run the twenty most commercially valuable queries your customers are likely to ask across <strong>Google AI Overviews</strong>, <strong>Perplexity</strong>, and <strong>Gemini</strong>. Document every result. This takes approximately one week and produces the data that informs every subsequent decision.</p>
+      </li>
+      <li>
+        <h3>Restructure Priority Pages to the Extractable Paragraph Standard</h3>
+        <p><strong>The extractable paragraph standard requires every paragraph to open with a complete, self-contained statement.</strong> Review the ten pages on your site most relevant to commercial queries. For each paragraph, apply this test: if this paragraph were lifted verbatim and shown without the surrounding page, would it make complete sense? If no — rewrite the opening sentence to carry the key claim.</p>
+      </li>
+      <li>
+        <h3>Implement Definition Blocks on Service and Topic Pages</h3>
+        <p><strong>Every page that defines a concept needs a marked definition block</strong> immediately below the H1 heading. A definition block contains the <code>&lt;dfn&gt;</code> element wrapping the term, followed by an em dash and a precise, two-sentence maximum definition. The definition must match the <code>DefinedTerm</code> schema on the same page exactly.</p>
+      </li>
+      <li>
+        <h3>Build a FAQ Section Using Real User Queries</h3>
+        <p><strong>Every commercial page should contain a FAQ section</strong> with a minimum of five questions. Each question must be verified against a real user query — Google's People Also Ask, AlsoAsked.com, or direct AI query testing. Each answer must be self-contained (one to three sentences), and the section must be marked with <code>FAQPage</code> JSON-LD schema.</p>
+      </li>
+      <li>
+        <h3>Resolve Entity Consistency Issues</h3>
+        <p><strong>Entity consistency is the single most underestimated factor in AI search authority.</strong> Check that your business name, description of services, and key personnel are described identically across your website, Google Business Profile, LinkedIn, and any directory listings. Variations — even minor ones — reduce the confidence AI systems place in your source.</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- FAQ -->
+  <FaqAccordion topic="GEO and AEO" items={faqItems} />
+
+  <!-- Key Takeaways -->
+  <KeyTakeaways items={keyTakeawaysItems} />
+
+</ArticleLayout>

@@ -1,0 +1,157 @@
+---
+interface FaqItem {
+  id: string;
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  topic: string;
+  items: FaqItem[];
+}
+
+const { topic, items } = Astro.props;
+---
+<section class="faq-section" id="faq" aria-label={`Frequently asked questions about ${topic}`}>
+  <h2>Frequently Asked Questions About {topic}</h2>
+
+  <div class="faq-list">
+    {items.map((item) => (
+      <details class="faq-item" id={`faq-${item.id}`}>
+        <summary class="faq-question">
+          {item.question}
+          <span class="faq-chevron" aria-hidden="true"></span>
+          <a href={`#faq-${item.id}`} class="faq-anchor" aria-label={`Direct link to: ${item.question}`}>#</a>
+        </summary>
+        <div class="faq-answer">
+          <p set:html={item.answer} />
+        </div>
+      </details>
+    ))}
+  </div>
+</section>
+
+<script>
+  (function () {
+    const faqItems = document.querySelectorAll('.faq-item');
+    if (!faqItems.length) return;
+
+    // Check reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    faqItems.forEach((details, index) => {
+      const summary = details.querySelector('summary.faq-question') as HTMLElement | null;
+      const answer = details.querySelector('.faq-answer') as HTMLElement | null;
+      if (!summary || !answer) return;
+
+      const questionText = summary.childNodes[0]?.textContent?.trim() || '';
+      const itemId = details.id;
+      const answerId = `faq-answer-${itemId.replace('faq-', '')}`;
+      const btnId = `faq-btn-${itemId.replace('faq-', '')}`;
+
+      // Build the enhanced button
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.setAttribute('aria-expanded', 'false');
+      btn.setAttribute('aria-controls', answerId);
+      btn.id = btnId;
+      btn.className = '';
+
+      // Move content into button
+      const chevron = summary.querySelector('.faq-chevron')?.cloneNode(true) as HTMLElement | null;
+      const anchor = summary.querySelector('.faq-anchor')?.cloneNode(true) as HTMLElement | null;
+
+      btn.appendChild(document.createTextNode(questionText));
+      if (chevron) btn.appendChild(chevron);
+
+      // Build question heading
+      const questionDiv = document.createElement('div');
+      questionDiv.className = 'faq-question';
+      questionDiv.appendChild(btn);
+      if (anchor) questionDiv.appendChild(anchor);
+
+      // Setup answer
+      answer.id = answerId;
+      answer.setAttribute('role', 'region');
+      answer.setAttribute('aria-labelledby', btnId);
+      answer.hidden = true;
+
+      // Replace details/summary with div structure
+      const itemDiv = document.createElement('div');
+      itemDiv.className = 'faq-item';
+      itemDiv.id = itemId;
+      itemDiv.appendChild(questionDiv);
+      itemDiv.appendChild(answer);
+
+      details.parentNode?.replaceChild(itemDiv, details);
+
+      // Toggle handler
+      btn.addEventListener('click', () => {
+        const expanded = btn.getAttribute('aria-expanded') === 'true';
+
+        if (!expanded) {
+          // Open
+          btn.setAttribute('aria-expanded', 'true');
+          answer.hidden = false;
+
+          if (!prefersReducedMotion) {
+            answer.classList.add('is-animating');
+            answer.style.maxHeight = '0px';
+            answer.style.overflow = 'hidden';
+            requestAnimationFrame(() => {
+              answer.style.maxHeight = answer.scrollHeight + 'px';
+            });
+            answer.addEventListener('transitionend', () => {
+              answer.style.maxHeight = '';
+              answer.style.overflow = '';
+              answer.classList.remove('is-animating');
+            }, { once: true });
+          }
+        } else {
+          // Close
+          btn.setAttribute('aria-expanded', 'false');
+
+          if (!prefersReducedMotion) {
+            answer.classList.add('is-animating');
+            answer.style.maxHeight = answer.scrollHeight + 'px';
+            answer.style.overflow = 'hidden';
+            requestAnimationFrame(() => {
+              answer.style.maxHeight = '0px';
+            });
+            answer.addEventListener('transitionend', () => {
+              answer.hidden = true;
+              answer.style.maxHeight = '';
+              answer.style.overflow = '';
+              answer.classList.remove('is-animating');
+            }, { once: true });
+          } else {
+            answer.hidden = true;
+          }
+        }
+      });
+    });
+
+    // Keyboard navigation between FAQ items
+    document.addEventListener('keydown', (e) => {
+      const buttons = Array.from(document.querySelectorAll('.faq-question button')) as HTMLButtonElement[];
+      const focused = document.activeElement as HTMLElement;
+      const idx = buttons.indexOf(focused as HTMLButtonElement);
+
+      if (idx === -1) return;
+
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        buttons[(idx + 1) % buttons.length]?.focus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        buttons[(idx - 1 + buttons.length) % buttons.length]?.focus();
+      } else if (e.key === 'Escape') {
+        const btn = buttons[idx];
+        if (btn.getAttribute('aria-expanded') === 'true') {
+          btn.click();
+          btn.focus();
+        }
+      }
+    });
+  })();
+</script>

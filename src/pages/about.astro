@@ -1,0 +1,161 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import KeyTakeaways from '../components/KeyTakeaways.astro';
+import ContextualCta from '../components/ContextualCta.astro';
+
+const keyTakeawaysItems = [
+  '<strong>Cillian BC is an independent AI search consultant</strong> working with Irish businesses on SEO, GEO, AEO, content engineering, and AI workflow design from a single point of contact.',
+  '<strong>Every engagement is scoped with a defined deliverable</strong> — no open-ended retainers, no black-box processes, and no work that your team cannot understand and maintain independently.',
+  '<strong>The practice is designed to work alongside existing marketing teams</strong>, not to replace or compete with them — a relevant consideration for Irish businesses managing internal and external expertise simultaneously.',
+  '<strong>Irish businesses across all sectors and scales are affected by AI search</strong>, but the scale of the intervention should match the actual problem — and determining that is the purpose of the first conversation.',
+  '<strong>The right starting point is a direct conversation</strong> — not a proposal, not a form, and not a commitment to anything beyond understanding each other\'s situation.',
+];
+
+const pageSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "AboutPage",
+      "@id": "https://cillianbc.com/about/#webpage",
+      "url": "https://cillianbc.com/about/",
+      "name": "About Cillian BC — AI Search Consultant, Ireland",
+      "description": "Cillian BC is an independent AI search consultant working with Irish businesses on SEO, GEO, AEO, and AI workflow design. Based in Ireland.",
+      "isPartOf": { "@id": "https://cillianbc.com/#website" },
+      "about": { "@id": "https://cillianbc.com/#person" },
+      "inLanguage": "en-IE"
+    },
+    {
+      "@type": "Person",
+      "@id": "https://cillianbc.com/#person",
+      "name": "Cillian BC",
+      "url": "https://cillianbc.com/",
+      "jobTitle": "AI Search Consultant",
+      "description": "Independent AI search consultant working with Irish businesses on SEO, GEO, AEO, content engineering, and AI workflow design.",
+      "knowsAbout": [
+        "Generative Engine Optimisation",
+        "Answer Engine Optimisation",
+        "Search Engine Optimisation",
+        "AI Workflows",
+        "Content Engineering",
+        "Structured Data"
+      ],
+      "areaServed": {
+        "@type": "Country",
+        "name": "Ireland"
+      },
+      "email": "hello@cillianbc.com"
+    }
+  ]
+};
+---
+<BaseLayout
+  title="About Cillian BC — AI Search Consultant, Ireland"
+  description="Cillian BC is an independent AI search consultant working with Irish businesses on SEO, GEO, AEO, and AI workflow design. Based in Ireland."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
+
+  <div class="container container--prose" style="padding-top: var(--space-2xl); padding-bottom: var(--space-2xl);">
+
+    <div class="about-profile">
+      <img
+        src="/images/cillian-portrait.png"
+        alt="Cillian BC, AI Search Consultant"
+        class="about-profile__portrait"
+        width="150"
+        height="165"
+        loading="eager"
+      />
+      <div>
+        <h1>About Cillian BC — AI Search Consultant, Ireland</h1>
+      </div>
+    </div>
+
+    <!-- Summary Intro -->
+    <section id="summary-intro" aria-label="About summary">
+      <p><strong>Cillian BC</strong> is an independent consultant helping Irish businesses stay visible as search moves from traditional results to AI-generated answers. The work covers <strong>SEO</strong>, <a href="/aeo-geo/"><strong>Generative Engine Optimisation (GEO)</strong></a>, <a href="/aeo-geo/#what-is-aeo"><strong>Answer Engine Optimisation (AEO)</strong></a>, <a href="/services/#service-content-engineering"><strong>content engineering</strong></a>, and <a href="/services/#service-ai-workflow-design"><strong>AI workflow design</strong></a> — disciplines that have converged and are best approached as a connected system.</p>
+      <p>This is a solo practice. There is no team, no subcontracting, and no account manager between you and the work. When you engage with me, you are working with one person who has a direct stake in the outcome.</p>
+    </section>
+
+    <!-- About Cillian BC -->
+    <section id="about-cillian-bc" aria-labelledby="about-heading">
+      <h2 id="about-heading">About Cillian BC</h2>
+      <p><strong>Most of my work has been at the intersection of content and search</strong> — understanding why some content surfaces and some does not, and building systems that consistently produce the former. For most of that time, the rules were relatively stable: good content, technically sound websites, and consistent link-building were the inputs; ranking and traffic were the outputs.</p>
+      <p><strong>That changed in 2023.</strong> Not because AI tools became available — they had been available in various forms for years — but because AI began to materially change how customers find businesses. The shift from "list of links" to "here is the answer" is not a future trend. It is the current state of Google for a growing proportion of commercial queries. When a potential customer asks Perplexity or Gemini which consultant to hire for a specific type of work, and gets a direct answer with a citation, the businesses not in that citation are not competing for that customer.</p>
+      <p><strong>The moment that clarified the direction of this work</strong> was auditing a well-performing Irish business's AI search presence and finding they were simply absent. Not underranking — absent. Their content was good. Their SEO was solid. Their website was fast. But their content was not structured for machine extraction. Every paragraph assumed prior context. Definitions were embedded mid-sentence. The FAQ section answered questions the business wanted customers to ask, not questions customers were actually asking AI tools. Fixing those structural issues — not creating new content — changed their citation rate within eight weeks. The <a href="/services/#service-geo">GEO implementation service</a> is designed specifically for this type of problem.</p>
+      <p><strong>That is the type of problem this practice is built for.</strong> Not the exciting-sounding transformation programme. The specific, fixable structural problem that is costing a business visibility it has already earned.</p>
+    </section>
+
+    <!-- How I Work -->
+    <section id="how-i-work" aria-labelledby="how-i-work-heading">
+      <h2 id="how-i-work-heading">How I Work</h2>
+      <p><strong>Every engagement starts with a conversation, not a proposal.</strong> Before I know what you need, I need to understand your situation — the size of your business, what your marketing function looks like, where you are currently visible and where you are not, and what a successful outcome would mean for you practically. That conversation is free. It is also how I determine whether I am the right person for the problem, or whether someone else would serve you better.</p>
+      <p><strong>Engagements are scoped, not open-ended.</strong> Every piece of work has a defined deliverable and a clear endpoint. You will know what you are paying for before the work starts, and you will receive a complete handover document when it ends — not a dependency on continued engagement to access the knowledge that has been built.</p>
+      <p><strong>The work is designed to be understood, not delegated.</strong> Every recommendation comes with a plain-English explanation of why it matters and what would need to be in place for you to maintain it independently. If the strategy I build requires me to keep running it, it is not the right strategy.</p>
+      <p><strong>I work alongside existing teams, not around them.</strong> For marketing leaders who are managing internal teams and external specialists simultaneously, the goal is to integrate — to make your team more capable, not to create a dependency or an internal political problem. This is particularly relevant for digital teams at Irish subsidiaries with reporting lines to European head offices.</p>
+    </section>
+
+    <ContextualCta
+      text="If you want to understand whether this is the right fit for your situation,"
+      href="mailto:hello@cillianbc.com"
+      linkText="that's what the first call is for"
+    />
+
+    <!-- Who This Is For -->
+    <section id="who-this-is-for" aria-labelledby="who-heading">
+      <h2 id="who-heading">Who This Is — and Is Not — For</h2>
+      <p><strong>This practice is well-suited to:</strong></p>
+      <ul class="snippet-bullets">
+        <li><strong>Irish marketing leaders</strong> at SaaS and technology companies who have been asked to develop an AI search strategy and need a clear, defensible plan to present internally</li>
+        <li><strong>Irish business owners and MDs</strong> who want to understand whether and how AI search is affecting their visibility — without being sold a programme they do not need</li>
+        <li><strong>Digital teams at Irish subsidiaries</strong> of European companies who are evaluating specialist consultants to complement an in-house team</li>
+      </ul>
+
+      <p><strong>This practice is not the right fit for:</strong></p>
+      <ul class="snippet-bullets">
+        <li>Businesses looking for a managed SEO retainer with monthly reporting and traffic targets. That is a different service model.</li>
+        <li>Businesses in sectors where AI search is not yet a meaningful factor in how customers find them — some B2B industries still operate primarily through referral and relationship, and a significant investment in AI search optimisation would be premature.</li>
+        <li>Businesses that need volume content production. Content engineering and content manufacturing are different things.</li>
+      </ul>
+
+      <p><strong>If you are unsure which category you fall into, that is exactly what the first conversation is for.</strong> Telling you that AI search is not your priority right now is a useful outcome — it saves you time and money, and it is what an honest conversation produces.</p>
+    </section>
+
+    <!-- Certifications -->
+    <section class="credentials-strip" id="credentials" aria-label="Certifications and partnerships">
+      <p class="credentials-strip__label">Certifications &amp; Partnerships</p>
+      <div class="credentials-strip__badges">
+        <img
+          src="/images/google-partner.png"
+          alt="Google Partner"
+          class="credentials-badge"
+          width="150"
+          height="56"
+          loading="lazy"
+        />
+        <img
+          src="/images/airops-certified-expert.png"
+          alt="AirOps Certified Expert"
+          class="credentials-badge"
+          width="56"
+          height="56"
+          loading="lazy"
+        />
+      </div>
+    </section>
+
+    <!-- Key Takeaways -->
+    <KeyTakeaways items={keyTakeawaysItems} />
+
+    <!-- Contact -->
+  </div>
+
+  <section class="contact-section" id="contact">
+    <div class="container container--prose">
+      <h2 class="contact-section__heading">Let's work out if this is worth a conversation.</h2>
+      <p class="contact-section__lead">The first call is 30 minutes, free, and focused on your situation. If I'm not the right person, I'll tell you that and point you somewhere useful. No proposal until we've established there's something worth proposing.</p>
+      <div class="contact-section__methods">
+        <a class="contact-section__email" href="mailto:hello@cillianbc.com">hello@cillianbc.com</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,120 @@
+---
+interface Row {
+  header: string;
+  cells: string[];
+  highlight?: boolean;
+}
+
+interface Props {
+  caption: string;
+  headers: string[];
+  rows: Row[];
+}
+
+const { caption, headers, rows } = Astro.props;
+---
+<div class="table-wrapper" id="geo-vs-seo-table">
+  <table class="comparison-table" id="comparison-table">
+    <caption>{caption}</caption>
+    <thead>
+      <tr>
+        {headers.map((header) => (
+          <th scope="col">{header}</th>
+        ))}
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((row) => (
+        <tr class={row.highlight ? 'row-emphasis' : ''}>
+          <th scope="row">{row.header}</th>
+          {row.cells.map((cell) => (
+            <td>{cell}</td>
+          ))}
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<script>
+  (function () {
+    const mediaQuery = window.matchMedia('(max-width: 639px)');
+
+    function buildCards() {
+      if (!mediaQuery.matches) return;
+
+      const tableWrapper = document.querySelector('.table-wrapper') as HTMLElement | null;
+      const table = document.querySelector('#comparison-table') as HTMLTableElement | null;
+      if (!tableWrapper || !table) return;
+
+      // Avoid duplicate card generation
+      if (tableWrapper.querySelector('.discipline-cards-container')) return;
+
+      const headers = Array.from(table.querySelectorAll('thead th')) as HTMLTableCellElement[];
+      const rows = Array.from(table.querySelectorAll('tbody tr')) as HTMLTableRowElement[];
+
+      // Build column data: skip index 0 (that's the row header column)
+      const columnCount = headers.length - 1;
+      const cardsContainer = document.createElement('div');
+      cardsContainer.className = 'discipline-cards-container';
+      cardsContainer.setAttribute('aria-hidden', 'true');
+
+      for (let col = 1; col <= columnCount; col++) {
+        const card = document.createElement('div');
+        card.className = 'discipline-card';
+
+        const cardHeader = document.createElement('div');
+        cardHeader.className = 'discipline-card__header';
+        cardHeader.textContent = headers[col]?.textContent || '';
+        card.appendChild(cardHeader);
+
+        rows.forEach((row) => {
+          const rowHeader = row.querySelector('th[scope="row"]') as HTMLTableCellElement | null;
+          const cells = Array.from(row.querySelectorAll('td')) as HTMLTableCellElement[];
+          const cell = cells[col - 1];
+          const isEmphasis = row.classList.contains('row-emphasis');
+
+          const cardRow = document.createElement('div');
+          cardRow.className = 'discipline-card__row' + (isEmphasis ? ' discipline-card__row--emphasis' : '');
+
+          const label = document.createElement('div');
+          label.className = 'discipline-card__label';
+          label.textContent = rowHeader?.textContent || '';
+
+          const value = document.createElement('div');
+          value.className = 'discipline-card__value';
+          value.textContent = cell?.textContent || '';
+
+          cardRow.appendChild(label);
+          cardRow.appendChild(value);
+          card.appendChild(cardRow);
+        });
+
+        cardsContainer.appendChild(card);
+      }
+
+      // Hide original table visually (keep in DOM for screen readers)
+      table.classList.add('visually-hidden');
+      tableWrapper.appendChild(cardsContainer);
+    }
+
+    function destroyCards() {
+      const tableWrapper = document.querySelector('.table-wrapper') as HTMLElement | null;
+      const table = document.querySelector('#comparison-table') as HTMLTableElement | null;
+      const cardsContainer = tableWrapper?.querySelector('.discipline-cards-container');
+      if (cardsContainer) cardsContainer.remove();
+      table?.classList.remove('visually-hidden');
+    }
+
+    function handleViewport(e: MediaQueryListEvent | MediaQueryList) {
+      if (e.matches) {
+        buildCards();
+      } else {
+        destroyCards();
+      }
+    }
+
+    mediaQuery.addEventListener('change', handleViewport);
+    handleViewport(mediaQuery);
+  })();
+</script>

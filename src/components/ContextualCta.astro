@@ -1,0 +1,12 @@
+---
+interface Props {
+  text: string;
+  href: string;
+  linkText: string;
+}
+
+const { text, href, linkText } = Astro.props;
+---
+<aside class="contextual-cta" aria-label="Invitation to continue the conversation">
+  <p><em>{text} <a href={href}>{linkText}</a>.</em></p>
+</aside>

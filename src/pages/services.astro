@@ -1,0 +1,266 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import DefinitionBlock from '../components/DefinitionBlock.astro';
+import SummaryIntro from '../components/SummaryIntro.astro';
+import SnippetBullets from '../components/SnippetBullets.astro';
+import FaqAccordion from '../components/FaqAccordion.astro';
+import KeyTakeaways from '../components/KeyTakeaways.astro';
+import ContextualCta from '../components/ContextualCta.astro';
+
+const summaryItems = [
+  '<strong>AI workflow design is practical, not theoretical</strong> — the goal is fewer hours spent on tasks that AI can handle reliably, not a transformation programme that takes 18 months.',
+  '<strong>Content engineering</strong> is the discipline of structuring information so it is useful to both human readers and machine-reading systems, including AI search engines.',
+  '<strong>The five services offered here are interdependent</strong> — SEO, GEO, AEO, content engineering, and AI workflow design reinforce each other, and the most effective engagements address more than one.',
+  '<strong>All services are scoped, not retainer-based</strong> — every engagement has a defined start, deliverable, and end point.',
+  '<strong>Irish businesses at every scale</strong> — from 15-person manufacturers to 500-person subsidiaries — can benefit from at least one of the services on this page.',
+];
+
+const seoItems = [
+  '<strong>Crawlability and indexation</strong> — confirming that search engines and AI systems can access and process every page correctly',
+  '<strong>Core Web Vitals</strong> — page speed, visual stability, and interactivity, which affect both ranking and user experience',
+  '<strong>Structured data (Schema.org markup)</strong> — the machine-readable layer that tells AI systems who you are, what you offer, and why you are authoritative',
+  '<strong>Canonical URL structure</strong> — eliminating duplicate content signals that dilute authority',
+  '<strong>Internal linking architecture</strong> — ensuring that the pages you want to rank are receiving appropriate link authority from the rest of your site',
+];
+
+const geoItems = [
+  '<strong>Content structure audit</strong> — reviewing existing content against the extractable paragraph standard: does each paragraph open with a complete, self-contained statement that an AI system can lift and use as a standalone answer?',
+  '<strong>Definition block implementation</strong> — every page that defines a concept needs a clearly marked, precisely worded definition that matches the definition in the page\'s structured data',
+  '<strong>Entity consistency</strong> — ensuring that the business name, service names, and key terms are used consistently across the website, Google Business Profile, LinkedIn, and other digital touchpoints',
+  '<strong>Schema.org markup</strong> — implementing <code>FAQPage</code>, <code>Service</code>, <code>Article</code>, and <code>DefinedTerm</code> schema to give AI systems explicit signals about content type and authority',
+  '<strong>Fragment identifier protocol</strong> — creating stable, citable URL fragments (e.g., <code>/services/geo/#what-is-geo</code>) that AI engines can cite directly to specific sections',
+];
+
+const aeoItems = [
+  '<strong>Question-intent mapping</strong> — identifying the specific questions your target customers are asking AI systems, using tools including Google\'s People Also Ask, AlsoAsked.com, and direct AI query research',
+  '<strong>FAQ architecture</strong> — building FAQ sections that match real user queries, with answers that are self-contained, precisely worded, and under 100 words',
+  '<strong>Speakable schema</strong> — marking the sections of your content that are appropriate for AI voice assistants to read aloud',
+  '<strong>Featured snippet and AI Overview targeting</strong> — restructuring specific pages to capture the "position zero" response for high-value commercial queries in the Irish market',
+  '<strong>FAQPage JSON-LD</strong> — implementing structured data that makes FAQ content explicitly machine-readable',
+];
+
+const contentEngineeringItems = [
+  '<strong>Content audit</strong> — assessing existing content for AI readability, semantic structure, and citation eligibility',
+  '<strong>Heading hierarchy remediation</strong> — restructuring H1–H3 headings so they function as both navigation signals and entity labels for AI systems',
+  '<strong>Pillar and cluster architecture</strong> — organising content into topic clusters that establish clear authority on specific subjects',
+  '<strong>Internal link map</strong> — documenting the anchor text and destination structure that reinforces entity relationships across the site',
+  '<strong>Editorial standards document</strong> — a plain-English writing guide for your team, covering the extractable paragraph standard, FAQ formatting, and definition block requirements',
+];
+
+const aiWorkflowItems = [
+  '<strong>Process mapping</strong> — identifying the content tasks your team repeats most often (brief writing, research summaries, first drafts, meta descriptions) and assessing which are suitable for AI assistance',
+  '<strong>Prompt architecture</strong> — designing the specific prompts, templates, and instructions that produce consistent, on-brand outputs from AI tools',
+  '<strong>Review and quality gate design</strong> — building the human review checkpoints that prevent AI-generated content from bypassing editorial standards',
+  '<strong>Tool selection</strong> — recommending the right AI tools for your specific use case, budget, and team size — without vendor bias',
+  '<strong>Documentation</strong> — creating a workflow document your team can follow without outside help',
+];
+
+const faqItems = [
+  {
+    id: 'what-is-ai-workflow-vs-chatgpt',
+    question: 'What is the difference between AI workflow design and just using ChatGPT?',
+    answer: '<strong>AI workflow design</strong> is the systematic process of deciding which content tasks AI tools should handle, building the prompts and templates that produce consistent results, and creating the quality review steps that prevent errors from reaching publication. Using ChatGPT without a workflow produces inconsistent outputs and no institutional knowledge. A designed workflow produces consistent, brand-consistent outputs that your team can repeat independently.',
+  },
+  {
+    id: 'do-i-need-all-five-services',
+    question: 'Do I need all five services, or can I start with one?',
+    answer: '<strong>Most engagements begin with a single service</strong> — typically either a technical SEO audit or a GEO content audit — and expand based on what the audit reveals. There is no minimum engagement size, and there is no pressure to take on more than the problem requires. If an audit reveals that one specific fix will address 80% of the issue, that is what gets recommended.',
+  },
+  {
+    id: 'how-long-does-engagement-take',
+    question: 'How long does a typical engagement take?',
+    answer: '<strong>Scope determines duration.</strong> A technical SEO audit for a 20-page website takes two to three weeks. A full GEO implementation across a content-heavy site takes eight to twelve weeks. AI workflow design for a small team typically takes four to six weeks from process mapping to documented workflow. Every engagement is scoped before it begins, with a clear deliverable and end date.',
+  },
+  {
+    id: 'relevant-to-small-irish-business',
+    question: 'Is this relevant to a small Irish business, or is it only for large companies?',
+    answer: '<strong>AI search optimisation is relevant to any Irish business</strong> whose customers search online before making a purchasing decision — which is most of them. The scale of the work adjusts to the size of the business. A 15-person company does not need the same scope of intervention as a 500-person subsidiary, and the engagements are priced and scoped accordingly.',
+  },
+  {
+    id: 'will-ai-replace-my-content-team',
+    question: 'Will AI replace my content team?',
+    answer: '<strong>AI tools will not replace your content team</strong>, and an engagement here will not recommend that they do. AI is effective at mechanical, repeatable tasks — first drafts, research aggregation, metadata generation. The judgment, voice, and relationship intelligence that makes content effective for Irish B2B buyers is human work. The goal of an AI workflow is to give your team more time for that work, not less.',
+  },
+  {
+    id: 'how-do-i-know-if-im-visible-in-ai-search',
+    question: 'How do I know if my content is already visible in AI search?',
+    answer: '<strong>The starting point is a <a href="/aeo-geo/#how-to-optimise">citation audit</a></strong> — a systematic check of whether your business appears in AI-generated answers for the queries your customers are most likely to ask. This is the diagnostic that informs everything else. It takes roughly one week and produces a clear picture of where you are and where the gaps are.',
+  },
+];
+
+const keyTakeawaysItems = [
+  '<strong>AI workflow services combine technical SEO, GEO, AEO, content engineering, and AI process design</strong> — disciplines that are now interdependent and most effective when addressed together.',
+  '<strong>Generative Engine Optimisation (GEO) requires content to be structured for AI extraction</strong>, not just for human reading — this is a distinct discipline from traditional SEO.',
+  '<strong>Answer Engine Optimisation (AEO) focuses on FAQ structure, question-intent mapping, and semantic clarity</strong> — ensuring a business appears when customers ask AI systems direct questions.',
+  '<strong>Irish businesses have a genuine early-mover advantage in AI search optimisation</strong>, with adoption lagging 12–18 months behind the US market.',
+  '<strong>Every engagement is scoped to a specific deliverable</strong> — there are no open-ended retainers, and the goal is always that your team can continue the strategy independently after the engagement ends.',
+];
+
+const pageSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Service",
+      "@id": "https://cillianbc.com/services/#service",
+      "name": "AI Workflow Services and Content Engineering",
+      "url": "https://cillianbc.com/services/",
+      "description": "Practical AI workflow design, content engineering, SEO, GEO, and AEO services for Irish businesses. Scoped engagements, no retainer lock-in.",
+      "provider": { "@id": "https://cillianbc.com/#person" },
+      "areaServed": { "@type": "Country", "name": "Ireland" },
+      "serviceType": [
+        "Technical SEO Audit",
+        "Generative Engine Optimisation",
+        "Answer Engine Optimisation",
+        "Content Engineering",
+        "AI Workflow Design"
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://cillianbc.com/services/#faq",
+      "mainEntity": faqItems.map((item) => ({
+        "@type": "Question",
+        "name": item.question,
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": item.answer.replace(/<[^>]+>/g, ''),
+        }
+      }))
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://cillianbc.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Services", "item": "https://cillianbc.com/services/" }
+      ]
+    }
+  ]
+};
+---
+<BaseLayout
+  title="AI Workflow Services for Irish Businesses | Cillian BC"
+  description="Practical AI workflow design, content engineering, SEO, GEO, and AEO services for Irish businesses. Scoped engagements, no retainer lock-in."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
+
+  <div class="container container--prose" style="padding-top: var(--space-2xl);">
+
+    <h1>AI Workflow Services and Content Engineering for Irish Businesses | Cillian BC</h1>
+
+    <!-- Definition -->
+    <DefinitionBlock
+      term="AI Workflow Service"
+      id="ai-workflow-service"
+      definition="a structured system that integrates AI tools (such as Claude, GPT-4, and Gemini) into existing business processes to reduce manual effort on repeatable content tasks, improve consistency, and free teams to focus on higher-value work. AI workflow design is not automation for its own sake. It is the deliberate engineering of how AI tools fit into how your team actually works."
+    />
+
+    <!-- Summary Intro -->
+    <h2>What You Need to Know Before Reading This Page</h2>
+    <SummaryIntro items={summaryItems} />
+
+    <!-- Core Problem -->
+    <section id="what-this-service-includes" aria-labelledby="core-problem-heading">
+      <h2 id="core-problem-heading">The Core Problem These Services Solve</h2>
+      <p><strong>Irish businesses are losing search visibility without knowing it.</strong> The shift from traditional search results to AI-generated answers means that customers are finding recommendations through <strong>Google AI Overviews</strong>, <strong>Perplexity</strong>, and <strong>Gemini</strong> — and the businesses appearing in those answers have <a href="/aeo-geo/#what-is-geo">structured their content in specific ways</a>. Most Irish businesses have not made those structural changes yet.</p>
+      <p><strong>Content that is not structured for AI systems will not be cited by them.</strong> This is not a quality problem — the content may be excellent. It is a formatting and semantic clarity problem. AI engines need content that is self-contained, precisely defined, and consistently labelled across a business's digital presence.</p>
+      <p><strong>AI tools are increasingly capable of handling repeatable content tasks</strong>, but most Irish teams are using them ad hoc — copy-pasting prompts into ChatGPT without a consistent workflow. The result is uneven output, wasted time, and no institutional knowledge. A designed workflow fixes this.</p>
+    </section>
+
+    <!-- Services -->
+    <section aria-labelledby="services-list-heading">
+      <h2 id="services-list-heading">What This Service Includes</h2>
+
+      <!-- 1. Technical SEO -->
+      <article id="service-technical-seo" class="service-article">
+        <h3>1. Technical SEO Audit and Remediation</h3>
+        <p><strong>Technical SEO</strong> is the foundation. Before any AI optimisation work delivers results, a site needs to be technically sound. A technical SEO audit covers:</p>
+        <SnippetBullets items={seoItems} />
+        <p><strong>Deliverable:</strong> A prioritised remediation report, written in plain English, with specific fixes ordered by impact. Every issue comes with a clear explanation of why it matters and what it takes to fix it.</p>
+        <div class="service-credential"><img src="/images/google-partner.png" alt="Google Partner" class="service-credential__badge" width="84" height="32" loading="lazy" /><span class="service-credential__text">Google Partner — verified expertise in Google's search and advertising ecosystem</span></div>
+      </article>
+
+      <!-- 2. GEO -->
+      <article id="service-geo" class="service-article">
+        <h3>2. Generative Engine Optimisation (GEO)</h3>
+        <DefinitionBlock
+          term="Generative Engine Optimisation (GEO)"
+          id="geo"
+          definition="the practice of structuring content so that AI-powered search engines retrieve and cite it when generating answers. GEO differs from traditional SEO in that the goal is AI citation, not search ranking."
+        />
+        <p><strong>GEO work includes:</strong></p>
+        <SnippetBullets items={geoItems} />
+        <p><strong>Deliverable:</strong> A GEO implementation plan covering content restructuring, schema markup, and entity signals — with a before-and-after comparison showing which queries the business now has a realistic chance of being cited for. For a full explanation of what <a href="/aeo-geo/">Generative Engine Optimisation</a> requires, see the complete guide.</p>
+      </article>
+
+      <ContextualCta
+        text="If you want to know which of these applies to your situation,"
+        href="mailto:hello@cillianbc.com"
+        linkText="that's what the first call is for"
+      />
+
+      <!-- 3. AEO -->
+      <article id="service-aeo" class="service-article">
+        <h3>3. Answer Engine Optimisation (AEO)</h3>
+        <DefinitionBlock
+          term="Answer Engine Optimisation (AEO)"
+          id="aeo"
+          definition="the discipline of optimising content specifically for AI systems that respond to direct questions, including Perplexity, Google AI Overviews, and voice assistants. AEO focuses on FAQ structure, question-intent mapping, and the semantic clarity of answers."
+        />
+        <p><strong>AEO work includes:</strong></p>
+        <SnippetBullets items={aeoItems} />
+        <p><strong>Deliverable:</strong> A prioritised list of target queries, a restructured FAQ section, and the schema markup needed to make that content eligible for AI citation. For a full explanation of <a href="/aeo-geo/#what-is-aeo">Answer Engine Optimisation</a>, see the complete guide.</p>
+      </article>
+
+      <!-- 4. Content Engineering -->
+      <article id="service-content-engineering" class="service-article">
+        <h3>4. Content Engineering</h3>
+        <DefinitionBlock
+          term="Content engineering"
+          id="content-engineering"
+          definition="the practice of designing content systems so that information is structured, reusable, and readable by both humans and machines. Content engineering sits at the intersection of editorial strategy and technical implementation."
+        />
+        <p><strong>Content engineering work includes:</strong></p>
+        <SnippetBullets items={contentEngineeringItems} />
+        <p><strong>Deliverable:</strong> An audit report, a revised content structure, and an editorial standards document your team can use independently.</p>
+      </article>
+
+      <!-- 5. AI Workflow Design -->
+      <article id="service-ai-workflow-design" class="service-article">
+        <h3>5. AI Workflow Design</h3>
+        <p><strong>AI workflow design</strong> means building repeatable systems that integrate AI tools into your team's existing content processes. The goal is not to replace your team's judgement. The goal is to eliminate the mechanical steps that slow them down.</p>
+        <p><strong>AI workflow design includes:</strong></p>
+        <SnippetBullets items={aiWorkflowItems} />
+        <p><strong>Deliverable:</strong> A documented AI workflow, tested with your team's real content tasks, with prompts, templates, and review checkpoints included.</p>
+        <div class="service-credential"><img src="/images/airops-certified-expert.png" alt="AirOps Certified Expert" class="service-credential__badge" width="32" height="32" loading="lazy" /><span class="service-credential__text">AirOps Certified Expert — verified AI workflow design and content operations</span></div>
+      </article>
+    </section>
+
+    <!-- Irish context -->
+    <section id="ai-workflows-ireland" aria-labelledby="ireland-heading">
+      <h2 id="ireland-heading">AI Workflows and Content Engineering for Irish Businesses</h2>
+      <p><strong>Irish marketing teams are typically under-resourced relative to their content responsibilities.</strong> A three-person marketing function at a 60-person SaaS company is often expected to produce content at a volume that requires a team twice its size. AI workflows do not solve a headcount problem, but they do change the ratio of time spent on mechanical tasks versus strategic ones.</p>
+      <p><strong>The Irish market context matters for AI workflow design.</strong> Irish business culture is relationship-first — content that is clearly AI-generated without human editorial judgment damages the trust that Irish B2B buyers place in the businesses they work with. The workflows built here are designed to use AI for the mechanical layer (research aggregation, structural drafts, metadata) while keeping editorial voice, judgment, and relationship sensitivity in human hands.</p>
+      <p><strong>Munster and regional Irish businesses</strong> often operate without a dedicated marketing team at all. For a manufacturing company in Kerry or a professional services firm in Galway, the goal is a simple, low-maintenance workflow — not a complex system that requires a dedicated operator.</p>
+
+      <h3>What This Looks Like in Practice</h3>
+      <p>A Munster-based professional services firm needed to produce consistent thought leadership content but had no in-house writer. The engagement involved three steps: a content strategy defining the topics the firm had genuine authority on; a prompt architecture that captured the principal's voice and specific expertise; and a workflow that allowed the firm to produce one substantive article per month with approximately four hours of senior input. Output quality was reviewed against the firm's existing client communications to ensure voice consistency.</p>
+    </section>
+
+    <!-- FAQ -->
+    <FaqAccordion topic="AI Workflow Services" items={faqItems} />
+
+    <!-- Key Takeaways -->
+    <KeyTakeaways items={keyTakeawaysItems} />
+
+  </div>
+
+  <section class="contact-section" id="contact">
+    <div class="container container--prose">
+      <h2 class="contact-section__heading">Let's work out if this is worth a conversation.</h2>
+      <p class="contact-section__lead">The first call is 30 minutes, free, and focused on your situation. If I'm not the right person, I'll tell you that and point you somewhere useful. No proposal until we've established there's something worth proposing.</p>
+      <div class="contact-section__methods">
+        <a class="contact-section__email" href="mailto:hello@cillianbc.com">hello@cillianbc.com</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,17 @@
+---
+interface Props {
+  items: string[];
+}
+
+const { items } = Astro.props;
+
+if (items.length < 3 || items.length > 5) {
+  throw new Error(`KeyTakeaways requires 3–5 items. Received ${items.length}.`);
+}
+---
+<section class="key-takeaways" id="key-takeaways" aria-label="Key takeaways from this page">
+  <h2 class="key-takeaways__heading">Key Takeaways</h2>
+  <ol class="key-takeaways__list">
+    {items.map((item) => <li><span set:html={item} /></li>)}
+  </ol>
+</section>

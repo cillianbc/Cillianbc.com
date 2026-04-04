@@ -1,0 +1,17 @@
+---
+// Alias component — delegates to ArticleCard with featured=true
+import ArticleCard from './ArticleCard.astro';
+
+interface Props {
+  title: string;
+  href: string;
+  category: string;
+  excerpt: string;
+  pubDate: Date;
+  readingTime: number;
+  keyTopics?: string[];
+}
+
+const props = Astro.props;
+---
+<ArticleCard {...props} featured={true} />
