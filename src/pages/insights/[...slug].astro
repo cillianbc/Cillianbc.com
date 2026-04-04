@@ -1,5 +1,13 @@
 ---
 import { getCollection } from 'astro:content';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm';
+import remarkRehype from 'remark-rehype';
+import rehypeRaw from 'rehype-raw';
+import rehypeStringify from 'rehype-stringify';
+import GithubSlugger from 'github-slugger';
+import remarkKeystakicTable from '../../plugins/remark-keystatic-table.mjs';
 import ArticleLayout from '../../layouts/ArticleLayout.astro';
 import AuthorBlock from '../../components/AuthorBlock.astro';
 
@@ -12,14 +20,47 @@ export async function getStaticPaths() {
 }
 
 const { article } = Astro.props;
-const { Content, headings } = await article.render();
-
 const siteUrl = 'https://cillianbc.com';
 const canonicalUrl = `${siteUrl}/insights/${article.slug}`;
 
-const tocItems = headings
-  .filter((h) => h.depth === 2)
-  .map((h) => ({ href: `#${h.slug}`, label: h.text }));
+const hasMarkdocTables = article.body?.includes('{% table %}');
+
+let Content: any = null;
+let tocItems: { href: string; label: string }[] = [];
+let renderedHtml = '';
+
+if (hasMarkdocTables) {
+  // Render via unified so the remark-keystatic-table plugin can run
+  const processor = unified()
+    .use(remarkParse)
+    .use(remarkGfm)
+    .use(remarkKeystakicTable)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeRaw)
+    .use(rehypeStringify);
+
+  const result = await processor.process(article.body);
+  renderedHtml = String(result);
+
+  // Extract H2 headings for TOC (match Astro's default slug behaviour)
+  const slugger = new GithubSlugger();
+  const headingRegex = /<h2[^>]*>([\s\S]*?)<\/h2>/gi;
+  let match;
+  while ((match = headingRegex.exec(renderedHtml)) !== null) {
+    // Strip any inner tags to get plain text
+    const text = match[1].replace(/<[^>]+>/g, '').trim();
+    const slug = slugger.slug(text);
+    tocItems.push({ href: `#${slug}`, label: text });
+    // Inject the id attribute into the h2 tag
+    renderedHtml = renderedHtml.replace(match[0], match[0].replace('<h2', `<h2 id="${slug}"`));
+  }
+} else {
+  const rendered = await article.render();
+  Content = rendered.Content;
+  tocItems = rendered.headings
+    .filter((h) => h.depth === 2)
+    .map((h) => ({ href: `#${h.slug}`, label: h.text }));
+}
 
 const articleSchema = JSON.stringify({
   "@context": "https://schema.org",
@@ -55,6 +96,10 @@ const formattedDate = article.data.pubDate.toLocaleDateString('en-IE', {
     <span class="article-meta__separator" aria-hidden="true">·</span>
     <span>{article.data.readingTime} min read</span>
   </div>
-  <Content />
+  {hasMarkdocTables ? (
+    <div set:html={renderedHtml} />
+  ) : (
+    <Content />
+  )}
   <AuthorBlock />
 </ArticleLayout>
