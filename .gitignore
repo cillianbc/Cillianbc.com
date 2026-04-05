@@ -4,3 +4,15 @@ dist/
 .env
 .env.*
 !.env.example
+
+# macOS
+.DS_Store
+
+# Claude Code local settings
+.claude/
+
+# Local research/strategy docs — not part of the codebase
+handovers/
+seo-technical-strategy.md
+ux-discovery-report-agent-output.md
+UX Discovery Report*.md

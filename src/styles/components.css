@@ -146,7 +146,8 @@
   }
 
   .site-nav__menu.is-open {
-    max-height: 400px;
+    max-height: 80dvh;
+    overflow-y: auto;
   }
 
   .site-nav__menu .site-nav__link {
