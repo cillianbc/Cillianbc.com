@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://cillianbc.com/sitemap.xml
+Sitemap: https://cillianbc.com/sitemap-0.xml
