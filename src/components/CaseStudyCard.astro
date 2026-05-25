@@ -1,0 +1,47 @@
+---
+interface Props {
+  title: string;
+  href: string;
+  client: string;
+  excerpt: string;
+  pubDate: Date;
+  readingTime: number;
+  stack: string[];
+  featured?: boolean;
+  keyTopics?: string[];
+}
+
+const { title, href, client, excerpt, pubDate, readingTime, stack, featured = false, keyTopics } = Astro.props;
+
+const formattedDate = pubDate.toLocaleDateString('en-IE', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+const isoDate = pubDate.toISOString().split('T')[0];
+---
+<article class={`article-item case-study-card${featured ? ' article-item--featured' : ''}`}>
+  <header>
+    <span class="article-item__category">Case Study · {client}</span>
+    <a href={href} class="article-item__title-link">
+      <h2 class="article-item__title">{title}</h2>
+    </a>
+  </header>
+  <p class="article-item__excerpt">{excerpt}</p>
+  {stack.length > 0 && (
+    <ul class="case-study-card__stack" role="list">
+      {stack.map((s) => <li class="tech-tag">{s}</li>)}
+    </ul>
+  )}
+  {featured && keyTopics && keyTopics.length > 0 && (
+    <p class="article-item__topics">
+      <strong>Key topics covered:</strong> {keyTopics.join(', ')}
+    </p>
+  )}
+  <footer class="article-meta">
+    <time datetime={isoDate} class="article-meta__date">{formattedDate}</time>
+    <span class="article-meta__separator" aria-hidden="true">·</span>
+    <span class="article-meta__reading-time">{readingTime} min read</span>
+  </footer>
+</article>

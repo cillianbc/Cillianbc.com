@@ -1,0 +1,17 @@
+---
+import CaseStudyCard from './CaseStudyCard.astro';
+
+interface Props {
+  title: string;
+  href: string;
+  client: string;
+  excerpt: string;
+  pubDate: Date;
+  readingTime: number;
+  stack: string[];
+  keyTopics?: string[];
+}
+
+const props = Astro.props;
+---
+<CaseStudyCard {...props} featured={true} />

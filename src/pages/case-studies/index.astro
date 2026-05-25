@@ -1,0 +1,107 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CaseStudyCard from '../../components/CaseStudyCard.astro';
+import FeaturedCaseStudy from '../../components/FeaturedCaseStudy.astro';
+import SummaryIntro from '../../components/SummaryIntro.astro';
+import { BOOKING_URL } from '../../config/constants.ts';
+
+const allStudies = await getCollection('caseStudies');
+const sorted = allStudies.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const featured = sorted.find((s) => s.data.featured);
+const rest = sorted.filter((s) => !s.data.featured || s.slug !== featured?.slug);
+
+function getExcerpt(body: string): string {
+  const lines = body.split('\n');
+  const para = lines.find((line) => {
+    const t = line.trim();
+    return t.length > 0 && !/^[#!>\-\*\|{%<]/.test(t) && !t.startsWith('---');
+  });
+  return para ? para.replace(/[*_`[\]()]/g, '').trim() : '';
+}
+
+const summaryItems = [
+  '<strong>Each case study documents a single engagement</strong> — the brief, the architectural decisions, the build, and the measurable outcomes.',
+  '<strong>The focus is the work, not the testimonial</strong>. Where a client name appears, it is because the project is in the public domain or the work was for an owned property.',
+  '<strong>If a pattern here resembles your situation</strong>, the first call is the right place to confirm whether the same approach would carry over.',
+];
+
+const pageSchema = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "CollectionPage",
+      "@id": "https://cillianbc.com/case-studies/#collection",
+      "name": "Case Studies",
+      "url": "https://cillianbc.com/case-studies/",
+      "description": "Documented case studies of AI workflow, content engineering, and headless architecture engagements.",
+      "isPartOf": { "@id": "https://cillianbc.com/#website" },
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://cillianbc.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Case Studies", "item": "https://cillianbc.com/case-studies/" },
+      ],
+    },
+  ],
+};
+---
+<BaseLayout
+  title="Case Studies | Cillian BC"
+  description="Documented case studies of AI workflow, content engineering, and headless architecture engagements for Irish businesses."
+>
+  <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
+
+  <section class="insights-index section">
+    <h1>Case Studies</h1>
+
+    <SummaryIntro items={summaryItems} />
+
+    {featured && (
+      <FeaturedCaseStudy
+        title={featured.data.title}
+        href={`/case-studies/${featured.slug}`}
+        client={featured.data.client}
+        excerpt={getExcerpt(featured.body)}
+        pubDate={featured.data.pubDate}
+        readingTime={featured.data.readingTime}
+        stack={featured.data.stack}
+        keyTopics={featured.data.keyTopics}
+      />
+    )}
+
+    {rest.length > 0 && (
+      <ol class="article-list" role="list">
+        {rest.map((study) => (
+          <li>
+            <CaseStudyCard
+              title={study.data.title}
+              href={`/case-studies/${study.slug}`}
+              client={study.data.client}
+              excerpt={getExcerpt(study.body)}
+              pubDate={study.data.pubDate}
+              readingTime={study.data.readingTime}
+              stack={study.data.stack}
+            />
+          </li>
+        ))}
+      </ol>
+    )}
+
+    {sorted.length === 0 && (
+      <p class="insights-empty">Nothing published here yet. Check back shortly.</p>
+    )}
+  </section>
+
+  <section class="contact-section" id="contact">
+    <div class="container container--prose">
+      <h2 class="contact-section__heading">Let's work out if this is worth a conversation.</h2>
+      <p class="contact-section__lead">The first call is 30 minutes, free, and focused on your situation. If I'm not the right person, I'll tell you that and point you somewhere useful. No proposal until we've established there's something worth proposing.</p>
+      <div class="contact-section__methods">
+        <a href={BOOKING_URL} class="btn--inverted" target="_blank" rel="noopener noreferrer">Book a 30-minute call</a>
+        <a class="contact-section__email" href="mailto:info@cillianbc.com">info@cillianbc.com</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

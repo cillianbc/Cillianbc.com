@@ -1,0 +1,116 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import SkipLink from '../components/SkipLink.astro';
+import SiteNav from '../components/SiteNav.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { BOOKING_URL } from '../config/constants.ts';
+import '../styles/global.css';
+import '../styles/typography.css';
+import '../styles/components.css';
+import '../styles/utilities.css';
+
+interface Hero {
+  title: string;
+  lead: string;
+  meta: {
+    date: string;
+    isoDate: string;
+    client: string;
+    sector: string;
+    services: string[];
+    stack: string[];
+  };
+}
+
+interface Props {
+  title: string;
+  description: string;
+  canonicalUrl?: string;
+  noindex?: boolean;
+  schema?: string;
+  hero: Hero;
+}
+
+const { title, description, canonicalUrl, noindex, schema, hero } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en-IE">
+<head>
+  <BaseHead
+    title={title}
+    description={description}
+    canonicalUrl={canonicalUrl}
+    noindex={noindex}
+  />
+  {schema && <script type="application/ld+json" set:html={schema} />}
+</head>
+<body>
+  <SkipLink />
+  <SiteNav />
+
+  <main id="main-content">
+    <header class="case-study-hero">
+      <div class="container container--full case-study-hero__grid">
+        <div class="case-study-hero__intro">
+          <h1 class="case-study-hero__title">{hero.title}</h1>
+          <p class="case-study-hero__lead">{hero.lead}</p>
+        </div>
+
+        <aside class="case-study-meta" aria-label="Case study details">
+          <dl class="case-study-meta__list">
+            <div class="case-study-meta__row">
+              <dt class="case-study-meta__label">Date</dt>
+              <dd class="case-study-meta__value">
+                <time datetime={hero.meta.isoDate}>{hero.meta.date}</time>
+              </dd>
+            </div>
+            <div class="case-study-meta__row">
+              <dt class="case-study-meta__label">Client</dt>
+              <dd class="case-study-meta__value">{hero.meta.client}</dd>
+            </div>
+            <div class="case-study-meta__row">
+              <dt class="case-study-meta__label">Sector</dt>
+              <dd class="case-study-meta__value">{hero.meta.sector}</dd>
+            </div>
+            <div class="case-study-meta__row">
+              <dt class="case-study-meta__label">Services</dt>
+              <dd class="case-study-meta__value">
+                <ul class="case-study-meta__service-list" role="list">
+                  {hero.meta.services.map((s) => <li>{s}</li>)}
+                </ul>
+              </dd>
+            </div>
+            <div class="case-study-meta__row">
+              <dt class="case-study-meta__label">Stack</dt>
+              <dd class="case-study-meta__value">
+                <ul class="case-study-meta__stack" role="list">
+                  {hero.meta.stack.map((s) => <li class="tech-tag">{s}</li>)}
+                </ul>
+              </dd>
+            </div>
+          </dl>
+        </aside>
+      </div>
+    </header>
+
+    <div class="container container--prose case-study-body">
+      <article class="prose">
+        <slot />
+      </article>
+    </div>
+  </main>
+
+  <section class="contact-section" id="contact">
+    <div class="container container--prose">
+      <h2 class="contact-section__heading">Curious whether this applies to your situation?</h2>
+      <p class="contact-section__lead">The first call is 30 minutes, free, and focused on your situation. If I'm not the right person, I'll tell you that and point you somewhere useful. No proposal until we've established there's something worth proposing.</p>
+      <div class="contact-section__methods">
+        <a href={BOOKING_URL} class="btn--inverted" target="_blank" rel="noopener noreferrer">Book a 30-minute call</a>
+        <a class="contact-section__email" href="mailto:info@cillianbc.com">info@cillianbc.com</a>
+      </div>
+    </div>
+  </section>
+
+  <SiteFooter />
+</body>
+</html>
