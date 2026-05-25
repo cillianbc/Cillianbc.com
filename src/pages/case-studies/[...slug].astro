@@ -1,0 +1,112 @@
+---
+import { getCollection } from 'astro:content';
+import { unified } from 'unified';
+import remarkParse from 'remark-parse';
+import remarkGfm from 'remark-gfm';
+import remarkRehype from 'remark-rehype';
+import rehypeRaw from 'rehype-raw';
+import rehypeStringify from 'rehype-stringify';
+import GithubSlugger from 'github-slugger';
+import remarkKeystakicTable from '../../plugins/remark-keystatic-table.mjs';
+import CaseStudyLayout from '../../layouts/CaseStudyLayout.astro';
+import AuthorBlock from '../../components/AuthorBlock.astro';
+
+export async function getStaticPaths() {
+  const studies = await getCollection('caseStudies');
+  return studies.map((study) => ({
+    params: { slug: study.slug },
+    props: { study },
+  }));
+}
+
+const { study } = Astro.props;
+const siteUrl = 'https://cillianbc.com';
+const canonicalUrl = `${siteUrl}/case-studies/${study.slug}`;
+
+const hasMarkdocTables = study.body?.includes('{% table %}');
+
+let Content: any = null;
+let renderedHtml = '';
+
+if (hasMarkdocTables) {
+  const processor = unified()
+    .use(remarkParse)
+    .use(remarkGfm)
+    .use(remarkKeystakicTable)
+    .use(remarkRehype, { allowDangerousHtml: true })
+    .use(rehypeRaw)
+    .use(rehypeStringify);
+
+  const result = await processor.process(study.body);
+  renderedHtml = String(result);
+
+  const slugger = new GithubSlugger();
+  const headingRegex = /<h2[^>]*>([\s\S]*?)<\/h2>/gi;
+  let match;
+  while ((match = headingRegex.exec(renderedHtml)) !== null) {
+    const text = match[1].replace(/<[^>]+>/g, '').trim();
+    const slug = slugger.slug(text);
+    renderedHtml = renderedHtml.replace(match[0], match[0].replace('<h2', `<h2 id="${slug}"`));
+  }
+} else {
+  const rendered = await study.render();
+  Content = rendered.Content;
+}
+
+const formattedDate = study.data.pubDate.toLocaleDateString('en-IE', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+const isoDate = study.data.pubDate.toISOString().split('T')[0];
+
+const articleSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": study.data.title,
+  "description": study.data.description,
+  "articleSection": "Case Study",
+  "datePublished": study.data.pubDate.toISOString(),
+  "dateModified": (study.data.updatedDate ?? study.data.pubDate).toISOString(),
+  "url": canonicalUrl,
+  "author": { "@id": `${siteUrl}/#person` },
+  "publisher": { "@id": `${siteUrl}/#website` },
+  "about": {
+    "@type": "Organization",
+    "name": study.data.client,
+  },
+  "mentions": study.data.stack.map((name) => ({
+    "@type": "SoftwareApplication",
+    "name": name,
+  })),
+  "keywords": study.data.keyTopics?.join(', ') ?? '',
+  "inLanguage": "en-IE",
+});
+
+const hero = {
+  title: study.data.title,
+  lead: study.data.heroLead,
+  meta: {
+    date: formattedDate,
+    isoDate,
+    client: study.data.client,
+    sector: study.data.sector,
+    services: study.data.services,
+    stack: study.data.stack,
+  },
+};
+---
+<CaseStudyLayout
+  title={`${study.data.title} | Cillian BC`}
+  description={study.data.description}
+  canonicalUrl={canonicalUrl}
+  schema={articleSchema}
+  hero={hero}
+>
+  {hasMarkdocTables ? (
+    <div set:html={renderedHtml} />
+  ) : (
+    <Content />
+  )}
+  <AuthorBlock />
+</CaseStudyLayout>

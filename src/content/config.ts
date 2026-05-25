@@ -14,4 +14,22 @@ const insights = defineCollection({
   }),
 });
 
-export const collections = { insights };
+const caseStudies = defineCollection({
+  type: 'content',
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    pubDate: z.coerce.date(),
+    updatedDate: z.coerce.date().optional(),
+    client: z.string(),
+    sector: z.string(),
+    services: z.array(z.string()),
+    stack: z.array(z.string()),
+    featured: z.boolean().default(false),
+    readingTime: z.number(),
+    keyTopics: z.array(z.string()).optional(),
+    heroLead: z.string(),
+  }),
+});
+
+export const collections = { insights, caseStudies };
