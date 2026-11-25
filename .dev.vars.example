@@ -1,0 +1,6 @@
+# Copy to .dev.vars for `npx wrangler pages dev dist`. The Turnstile secret below is Cloudflare's always-pass test key.
+TURNSTILE_SECRET_KEY=1x0000000000000000000000000000000AA
+CF_ACCOUNT_ID=your_cloudflare_account_id
+CF_EMAIL_API_TOKEN=token_with_email_sending_write
+CONTACT_TO=info@cillianbc.com
+CONTACT_FROM=forms@cillianbc.com

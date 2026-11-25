@@ -3,7 +3,7 @@ import BaseHead from '../components/BaseHead.astro';
 import SkipLink from '../components/SkipLink.astro';
 import SiteNav from '../components/SiteNav.astro';
 import SiteFooter from '../components/SiteFooter.astro';
-import { BOOKING_URL } from '../config/constants.ts';
+import { CONTACT_FORM_URL } from '../config/constants.ts';
 import '../styles/global.css';
 import '../styles/typography.css';
 import '../styles/components.css';
@@ -105,7 +105,7 @@ const { title, description, canonicalUrl, noindex, schema, hero } = Astro.props;
       <h2 class="contact-section__heading">Curious whether this applies to your situation?</h2>
       <p class="contact-section__lead">The first call is 30 minutes, free, and focused on your situation. If I'm not the right person, I'll tell you that and point you somewhere useful. No proposal until we've established there's something worth proposing.</p>
       <div class="contact-section__methods">
-        <a href={BOOKING_URL} class="btn--inverted" target="_blank" rel="noopener noreferrer">Book a 30-minute call</a>
+        <a href={CONTACT_FORM_URL} class="btn--inverted">Send a message</a>
         <a class="contact-section__email" href="mailto:info@cillianbc.com">info@cillianbc.com</a>
       </div>
     </div>

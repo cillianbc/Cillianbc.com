@@ -12,7 +12,7 @@ npm run preview   # Preview production build locally
 
 No test runner is configured. The repo includes Playwright as a dev dependency but no test scripts are defined.
 
-Deployed to Cloudflare Pages; build command `npm run build`, output directory `dist/`. Every push to `main` triggers a deploy automatically.
+Deployed to Cloudflare Pages; build command `npm run build`, output directory `dist/`. Every push to `main` triggers a deploy automatically. Cloudflare Pages also compiles `functions/` (Pages Functions) on deploy — see *Contact form* below.
 
 ## Stack
 
@@ -40,7 +40,7 @@ Both layouts set `<html lang="en-IE">` and `<main id="main-content">`.
 ### Pages
 
 - `index.astro`, `services.astro`, `aeo-geo.astro`, `about.astro`, `automation.astro` — static pages
-- `contact.astro` — contact page; primary destination for all "Start a conversation" CTAs; contains booking CTA, `SummaryIntro`, and `KeyTakeaways`
+- `contact.astro` — contact page; primary destination for all "Start a conversation" and "Send a message" CTAs; contains the contact form (`#contact-form`), `SummaryIntro`, and `KeyTakeaways`
 - `insights/index.astro` — insights listing page
 - `insights/[...slug].astro` — dynamic route for individual articles
 - `404.astro` — uses `noindex={true}` and `export const prerender = true`
@@ -79,12 +79,24 @@ Styles are split across four files in `src/styles/`:
 
 The `.contact-section` must always sit **outside** any `.container` div as a direct child of `<BaseLayout>`, with its own inner `.container.container--prose`. Getting this wrong breaks the full-bleed background image. The services page previously had it trapped inside the prose container — don't repeat that.
 
-**Contact section CTA pattern:** Every `.contact-section` now contains two CTAs inside `.contact-section__methods`: a `.btn--inverted` "Book a 30-minute call" button (links to `BOOKING_URL`, opens in new tab) followed by the `.contact-section__email` mailto link. The contact page (`/contact`) itself has no `.contact-section` at the bottom — it is the contact destination.
+**Contact section CTA pattern:** Every `.contact-section` contains two CTAs inside `.contact-section__methods`: a `.btn--inverted` "Send a message" button (links to `CONTACT_FORM_URL`, same tab) followed by the `.contact-section__email` mailto link. The contact page (`/contact`) itself has no `.contact-section` at the bottom — it is the contact destination.
+
+The Proton Calendar booking link was removed site-wide in November 2026 because it was attracting spam bookings. Do not re-add a public booking link; calls are arranged by email after a form enquiry.
 
 ### Site-wide constants
 
 `src/config/constants.ts` exports shared values used across pages:
-- `BOOKING_URL` — the Proton Calendar booking link. Update here to change it everywhere. Import in any page that renders a "Book a 30-minute call" button.
+- `CONTACT_FORM_URL` — `/contact/#contact-form`. Import in any page that renders a "Send a message" button.
+- `TURNSTILE_SITE_KEY` — reads `PUBLIC_TURNSTILE_SITE_KEY`; falls back to Cloudflare's always-pass test key outside production builds.
+
+### Contact form
+
+- **Markup and client JS:** `src/pages/contact.astro`. Submits via `fetch` to `/api/contact` and shows inline field errors or a success message. Styles are the `.contact-form*` rules in `components.css`.
+- **Backend:** `functions/api/contact.ts` (Cloudflare Pages Function). Order of checks: honeypot field `website` (if filled, returns fake success) → field validation → Turnstile `siteverify` → email via the Cloudflare Email Service REST API to `CONTACT_TO`, with `reply_to` set to the sender. Pages Functions don't support the `send_email` binding, so it calls the REST API (`/accounts/{id}/email/sending/send`) instead.
+- **Email Service setup:** `cillianbc.com` is onboarded to Email *Sending* only (records on `cf-bounce.` and `cf-bounce._domainkey`). Inbound mail is Proton Mail via the root MX records. Do **not** enable Email *Routing* on the root domain, because it replaces those MX records. `CONTACT_TO` must be a verified destination address in the Cloudflare account (the Workers Free plan only sends to verified destinations).
+- **Environment variables (Cloudflare Pages → Settings → Variables and Secrets):** `PUBLIC_TURNSTILE_SITE_KEY` (build time), `CF_ACCOUNT_ID` (plain text), `TURNSTILE_SECRET_KEY` and `CF_EMAIL_API_TOKEN` (secrets; the token needs the *Email Sending Write* permission), optional `CONTACT_TO` (default `info@cillianbc.com`) and `CONTACT_FROM` (default `forms@cillianbc.com`, must be on a domain onboarded to Email Sending).
+- **Production builds fail on purpose** if `PUBLIC_TURNSTILE_SITE_KEY` is missing, so the form can never go live without spam protection.
+- `npm run dev` does not run Pages Functions. To test the full flow locally, build and run `npx wrangler pages dev dist` with the env vars in a `.dev.vars` file (Turnstile test keys: site `1x00000000000000000000AA`, secret `1x0000000000000000000000000000000AA`).
 
 ### Component gotchas
 

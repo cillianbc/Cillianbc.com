@@ -1701,25 +1701,164 @@ details[open] .faq-chevron {
   max-width: 42rem;
 }
 
-.contact-booking-section {
+/* === CONTACT FORM === */
+.contact-form-section {
   background-color: var(--color-atlantic-mist);
+  /* Keeps the heading clear of the sticky nav when arriving via /contact/#contact-form */
+  scroll-margin-top: var(--nav-height);
 }
 
-.contact-booking {
+.contact-form {
   margin-top: var(--space-xl);
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-md);
+  gap: var(--space-lg);
 }
 
-.contact-booking__secondary {
-  font-size: var(--text-body);
+.contact-form[hidden] {
+  display: none;
+}
+
+.contact-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.contact-form__label {
+  font-size: var(--text-body-sm);
+  font-weight: 600;
+  color: var(--color-primary-text);
+}
+
+.contact-form__optional {
+  font-weight: 400;
   color: var(--color-secondary-text);
+}
+
+.contact-form__hint {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  color: var(--color-secondary-text);
+}
+
+.contact-form__input {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-inter);
+  font-feature-settings: var(--font-inter-features);
+  font-size: var(--text-body);
+  line-height: 1.5;
+  color: var(--color-primary-text);
+  background-color: var(--color-off-white);
+  border: 1.5px solid var(--color-mid-stone);
+  border-radius: 4px;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .contact-form__input {
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+  }
+}
+
+.contact-form__input:hover {
+  border-color: var(--color-deep-stone);
+}
+
+.contact-form__input:focus-visible {
+  outline: none;
+  border-color: var(--color-atlantic);
+  box-shadow: var(--shadow-focus);
+}
+
+.contact-form__input[aria-invalid="true"] {
+  border-color: var(--color-error);
+}
+
+.contact-form__textarea {
+  min-height: 10rem;
+  resize: vertical;
+}
+
+.contact-form__error {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  color: var(--color-error);
+}
+
+/* Honeypot: kept out of view and out of the accessibility tree */
+.contact-form__trap {
+  position: absolute;
+  left: -10000px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.contact-form__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+
+.contact-form__actions .btn--primary[disabled] {
+  opacity: 0.7;
+  cursor: progress;
+}
+
+.contact-form__status {
+  margin: 0;
+  font-size: var(--text-body);
+  color: var(--color-primary-text);
+}
+
+.contact-form__status:empty {
+  display: none;
+}
+
+.contact-form__status.is-error {
+  color: var(--color-error);
+}
+
+.contact-form__note {
+  margin: 0;
+  font-size: var(--text-body-sm);
+  color: var(--color-secondary-text);
+}
+
+.contact-form__success {
+  margin-top: var(--space-xl);
+  padding: var(--space-lg);
+  background-color: var(--color-off-white);
+  border: 1.5px solid var(--color-success);
+  border-radius: 4px;
+}
+
+.contact-form__success:focus {
+  outline: none;
+}
+
+.contact-form__success p {
   margin: 0;
 }
 
-.contact-booking__secondary a {
+.contact-form__success p + p {
+  margin-top: var(--space-sm);
+}
+
+.contact-form__success-title {
+  font-weight: 600;
+  color: var(--color-success);
+}
+
+.contact-form__alt {
+  margin: var(--space-xl) 0 0;
+  font-size: var(--text-body);
+  color: var(--color-secondary-text);
+}
+
+.contact-form__alt a {
   color: var(--color-atlantic);
 }
 
