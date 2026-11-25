@@ -2,13 +2,17 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import SummaryIntro from '../components/SummaryIntro.astro';
 import KeyTakeaways from '../components/KeyTakeaways.astro';
-import { BOOKING_URL } from '../config/constants';
+import { TURNSTILE_SITE_KEY } from '../config/constants';
+
+if (!TURNSTILE_SITE_KEY) {
+  throw new Error('PUBLIC_TURNSTILE_SITE_KEY is not set. Add it in Cloudflare Pages → Settings → Variables and Secrets before deploying the contact form.');
+}
 
 const summaryItems = [
   '<strong>The first call is 30 minutes, free, and diagnostic</strong> — I want to understand your situation before recommending anything.',
   '<strong>No proposal until there is something worth proposing.</strong> If your problem is not one I can help with, I will say so plainly and point you somewhere more useful.',
   '<strong>Nothing to prepare.</strong> Bring your questions. The conversation determines whether there is a problem worth solving together — that is all.',
-  '<strong>You can book directly below</strong> or email <a href="mailto:info@cillianbc.com">info@cillianbc.com</a> if you would prefer to send some context first.',
+  '<strong>Send a message below</strong> or email <a href="mailto:info@cillianbc.com">info@cillianbc.com</a>. I will reply by email to arrange a time for the call.',
 ];
 
 const keyTakeawaysItems = [
@@ -26,7 +30,7 @@ const pageSchema = {
       "@id": "https://cillianbc.com/contact/#webpage",
       "url": "https://cillianbc.com/contact/",
       "name": "Contact | Cillian BC — AI Search Consultant",
-      "description": "Book a free 30-minute diagnostic call with Cillian BC, independent AI search consultant for Irish businesses.",
+      "description": "Contact Cillian BC, independent AI search consultant for Irish businesses, to arrange a free 30-minute diagnostic call.",
       "isPartOf": { "@id": "https://cillianbc.com/#website" },
       "inLanguage": "en-IE"
     },
@@ -52,7 +56,7 @@ const pageSchema = {
 ---
 <BaseLayout
   title="Contact | Cillian BC — AI Search Consultant"
-  description="Book a free 30-minute diagnostic call with Cillian BC, independent AI search consultant for Irish businesses. No proposal until there is something worth proposing."
+  description="Contact Cillian BC, independent AI search consultant for Irish businesses, to arrange a free 30-minute diagnostic call. No proposal until there is something worth proposing."
   canonicalUrl="https://cillianbc.com/contact/"
 >
   <script type="application/ld+json" set:html={JSON.stringify(pageSchema)} />
@@ -71,16 +75,63 @@ const pageSchema = {
     </div>
   </section>
 
-  <section class="section contact-booking-section" id="book-a-call" aria-labelledby="booking-heading">
+  <section class="section contact-form-section" id="contact-form" aria-labelledby="contact-form-heading">
     <div class="container container--prose">
-      <h2 id="booking-heading">Book a free 30-minute call</h2>
-      <p>Pick a time that works for you. The call will focus on your specific situation — what you are trying to solve, where you are now, and whether there is something worth working on together.</p>
-      <div class="contact-booking">
-        <a href={BOOKING_URL} class="btn--primary" target="_blank" rel="noopener noreferrer">Book a 30-minute call</a>
-        <p class="contact-booking__secondary">
-          Prefer email? <a href="mailto:info@cillianbc.com">info@cillianbc.com</a>
-        </p>
+      <h2 id="contact-form-heading">Send a message</h2>
+      <p>Tell me what you are trying to solve and where things stand now. I will reply by email, and if there is something worth working on together, we will arrange a free 30-minute call.</p>
+
+      <form class="contact-form" id="contact-form-el" action="/api/contact" method="post">
+        <div class="contact-form__field">
+          <label class="contact-form__label" for="contact-name">Name</label>
+          <input class="contact-form__input" id="contact-name" name="name" type="text" autocomplete="name" required maxlength="100" aria-describedby="contact-name-error" />
+          <p class="contact-form__error" id="contact-name-error" data-error-for="name" hidden></p>
+        </div>
+
+        <div class="contact-form__field">
+          <label class="contact-form__label" for="contact-email">Email</label>
+          <input class="contact-form__input" id="contact-email" name="email" type="email" autocomplete="email" required maxlength="254" aria-describedby="contact-email-error" />
+          <p class="contact-form__error" id="contact-email-error" data-error-for="email" hidden></p>
+        </div>
+
+        <div class="contact-form__field">
+          <label class="contact-form__label" for="contact-company">Company or website <span class="contact-form__optional">(optional)</span></label>
+          <input class="contact-form__input" id="contact-company" name="company" type="text" autocomplete="organization" maxlength="200" aria-describedby="contact-company-error" />
+          <p class="contact-form__error" id="contact-company-error" data-error-for="company" hidden></p>
+        </div>
+
+        <div class="contact-form__field">
+          <label class="contact-form__label" for="contact-message">Message</label>
+          <p class="contact-form__hint" id="contact-message-hint">What are you trying to solve? A few sentences is plenty.</p>
+          <textarea class="contact-form__input contact-form__textarea" id="contact-message" name="message" rows="6" required minlength="10" maxlength="5000" aria-describedby="contact-message-hint contact-message-error"></textarea>
+          <p class="contact-form__error" id="contact-message-error" data-error-for="message" hidden></p>
+        </div>
+
+        <div class="contact-form__trap" aria-hidden="true">
+          <label for="contact-website">Leave this field empty</label>
+          <input id="contact-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+        </div>
+
+        <div class="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} data-theme="light" data-appearance="interaction-only"></div>
+
+        <div class="contact-form__actions">
+          <button class="btn--primary" type="submit">Send message</button>
+          <p class="contact-form__status" data-form-status role="status" aria-live="polite"></p>
+          <p class="contact-form__note">Your details are only used to reply to your message.</p>
+        </div>
+      </form>
+
+      <div class="contact-form__success" id="contact-form-success" tabindex="-1" hidden>
+        <p class="contact-form__success-title">Thanks, your message has been sent.</p>
+        <p>I will reply by email. If it turns out there is something worth working on together, we will arrange a time for a free 30-minute call.</p>
       </div>
+
+      <noscript>
+        <p class="contact-form__status is-error">The form needs JavaScript to run its spam check. You can email <a href="mailto:info@cillianbc.com">info@cillianbc.com</a> instead.</p>
+      </noscript>
+
+      <p class="contact-form__alt">
+        Prefer email? <a href="mailto:info@cillianbc.com">info@cillianbc.com</a>
+      </p>
     </div>
   </section>
 
@@ -90,4 +141,78 @@ const pageSchema = {
     </div>
   </section>
 
+  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <script>
+    type ContactResponse = { ok?: boolean; error?: string; fields?: Record<string, string> };
+
+    const form = document.getElementById('contact-form-el') as HTMLFormElement | null;
+    const success = document.getElementById('contact-form-success');
+
+    if (form && success) {
+      const status = form.querySelector<HTMLElement>('[data-form-status]')!;
+      const button = form.querySelector<HTMLButtonElement>('button[type="submit"]')!;
+      const buttonLabel = button.textContent;
+      const turnstile = () => (window as unknown as { turnstile?: { reset: () => void } }).turnstile;
+
+      const clearErrors = () => {
+        form.querySelectorAll<HTMLElement>('[data-error-for]').forEach((el) => {
+          el.textContent = '';
+          el.hidden = true;
+        });
+        form.querySelectorAll('[aria-invalid="true"]').forEach((el) => el.removeAttribute('aria-invalid'));
+        status.textContent = '';
+        status.classList.remove('is-error');
+      };
+
+      const showError = (result: ContactResponse) => {
+        status.textContent = result.error || 'Your message could not be sent. Please try again, or email info@cillianbc.com.';
+        status.classList.add('is-error');
+
+        let firstInvalid: HTMLElement | null = null;
+        for (const [field, message] of Object.entries(result.fields || {})) {
+          const input = form.elements.namedItem(field);
+          const errorEl = form.querySelector<HTMLElement>(`[data-error-for="${field}"]`);
+          if (!(input instanceof HTMLElement) || !errorEl) continue;
+          input.setAttribute('aria-invalid', 'true');
+          errorEl.textContent = message;
+          errorEl.hidden = false;
+          firstInvalid ??= input;
+        }
+        firstInvalid?.focus();
+      };
+
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        clearErrors();
+        button.disabled = true;
+        button.textContent = 'Sending…';
+
+        let sent = false;
+        try {
+          const response = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { Accept: 'application/json' },
+          });
+          const result: ContactResponse = await response.json().catch(() => ({}));
+          if (response.ok && result.ok) {
+            sent = true;
+            form.hidden = true;
+            success.hidden = false;
+            success.focus();
+          } else {
+            showError(result);
+          }
+        } catch {
+          showError({ error: 'Your message could not be sent. Check your connection and try again, or email info@cillianbc.com.' });
+        } finally {
+          if (!sent) {
+            button.disabled = false;
+            button.textContent = buttonLabel;
+            turnstile()?.reset();
+          }
+        }
+      });
+    }
+  </script>
 </BaseLayout>

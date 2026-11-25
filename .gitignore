@@ -16,3 +16,7 @@ handovers/
 seo-technical-strategy.md
 ux-discovery-report-agent-output.md
 UX Discovery Report*.md
+
+# Cloudflare local dev secrets
+.dev.vars
+.wrangler/
